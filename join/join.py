@@ -25,7 +25,12 @@ current_utc_time = datetime.utcnow()
 
 @app.route('/')
 def home():
-	return render_template("join.html")
+	return render_template("home.html")
+
+
+@app.route('/sign')
+def join():
+    return render_template("join.html")
 
 
 @app.route('/check', methods=['POST'])
@@ -35,27 +40,20 @@ def check():
     if user_in_db:
         abort(404)
     else:
-        return {"msg":"중복없음"}
-    
-@app.route('/home')
-def ss():
-	return render_template("home.html")
+        return {"msg": "중복없음"}
+
+
+
+
 
 @app.route("/signup", methods=['POST'])
 def music():
     id = request.form.get("id")
     pw = request.form.get("password")
-    user= User(username = id, password = pw)
+    user = User(username=id, password=pw)
     db.session.add(user)
     db.session.commit()
     return jsonify({"msg": "가입완료!"})
-
-  
-       
-    
-
-
-
 
 
 class User(db.Model):
@@ -63,11 +61,6 @@ class User(db.Model):
     username = db.Column(db.String, nullable=False)
     password = db.Column(db.String, nullable=False)
     frinedlist = db.Column(db.String, nullable=True)
-   
-
-    
-
-
 
 
 with app.app_context():

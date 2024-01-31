@@ -9,7 +9,10 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+            background-image: url('../static/6468578.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
             margin: 0;
             padding: 0;
             display: flex;
@@ -19,8 +22,7 @@
         }
 
         header {
-            background-color: #808080;
-            /* 회색 배경색 */
+
             padding: 60px 0;
             position: fixed;
             /* 헤더를 고정 */
@@ -33,6 +35,7 @@
         }
 
         .header-container {
+            background-color: transparent;
             max-width: 2000px;
             margin: 0 auto;
             display: flex;
@@ -56,7 +59,7 @@
         }
 
         form {
-            margin-top: 70px;
+            margin-top: 30px;
             /* 헤더의 높이만큼 아래로 내림 */
             background-color: #fff;
             padding: 20px;
@@ -83,7 +86,7 @@
         }
 
         button {
-            background-color: #acacac;
+            background-color: #350302;
             color: #fff;
             padding: 10px 20px;
             border: none;
@@ -91,13 +94,17 @@
             cursor: pointer;
         }
 
+        #home:hover {
+            background-color: #ccc;
+        }
+
+
         button:hover {
-            background-color: #acacac;
+            background-color: #590100;
         }
 
         header {
-            background-color: #808080;
-            /* 회색 배경색 */
+
             padding: 10px 0;
         }
     </style>
@@ -107,7 +114,7 @@
     <header>
         <div class="header-container">
 
-            <button class="rounded-button" onclick="goToHomePage()">홈페이지</button>
+            <button class="rounded-button" id="home" onclick="goToHomePage()">홈페이지</button>
         </div>
     </header>
     <form>
