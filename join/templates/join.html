@@ -118,8 +118,8 @@
         </div>
     </header>
     <form>
-        <label for="username">아이디:</label>
-        <input type="text" id="username" name="username" required>
+        <label for="username">아이디</label>
+        <input type="email" id="username" name="username" required>
         <button type="button" onclick="checkDuplicate()">아이디 중복확인</button>
         <p id=id_check> </p>
 
@@ -129,6 +129,8 @@
         <label for="confirm-password">비밀번호 확인:</label>
         <input type="password" id="confirm-password" name="confirm-password" required>
         <p id="pw_check"></p>
+        <label for="text">이름</label>
+        <input type="text" id="u_name" name="u_name" required>
 
 
 
@@ -139,28 +141,40 @@
         function checkDuplicate() {
             // 중복 확인 로직을 추가할 수 있습니다.
             let id = $("#username").val(); // message-input의 값만 가져오기
+            var emailCheck = $("#id_check"); // 이 부분이 추가되어야 합니다.
 
-            if (id !== "") {
-                $.ajax({
-                    type: "post", // 어떤 방식으로 보낼지
-                    url: "http://127.0.0.1:8000/check", // 보낼 주소
+            var emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
-                    data: { id: id }, // 데이터를 JSON 문자열로 변환
-                    success: function (response) {
-                        $("#id_check").text("사용 가능한 아이디입니다").css("color", "green");
-                    },
-                    error: function () {
-                        $("#id_check").text("중복된 아이디입니다").css("color", "red");
-
-                    },
-                });
+            if (!emailRegex.test(id)) {
+                emailCheck.text("올바른 이메일 형식이 아닙니다.").css("color", "red");
+            } else {
+                if (id !== "") {
+                    $.ajax({
+                        type: "post", // 어떤 방식으로 보낼지
+                        url: "http://127.0.0.1:8000/check", // 보낼 주소
+                        data: { id: id }, // 데이터를 JSON 문자열로 변환
+                        success: function (response) {
+                            if (response) {
+                                emailCheck.text("사용 가능한 아이디입니다").css("color", "green");
+                            } else {
+                                emailCheck.text("중복된 아이디입니다").css("color", "red");
+                            }
+                        },
+                        error: function () {
+                            emailCheck.text("중복 확인 중 오류가 발생했습니다").css("color", "red");
+                        },
+                    });
+                }
             }
         }
+
+
 
         $(document).ready(function () {
             $("#confirm-password, #password").on("input", function () {
                 let check_pw = $("#confirm-password").val();
                 let pw = $("#password").val();
+
 
 
                 if (check_pw !== "" && pw !== "") {
@@ -180,8 +194,9 @@
 
             let id_check = $("#id_check").text();
             let pww = $("#pw_check").text();
+            let name = $("#u_name").val();
 
-            if (id !== "" && password !== "") {
+            if (id !== "" && password !== "" && name !== "") {
                 if (
                     id_check === "사용 가능한 아이디입니다" &&
                     pww === "비밀번호가 일치합니다"
@@ -190,14 +205,15 @@
                         type: "post",
                         url: "http://127.0.0.1:8000/signup",
 
-                        data: ({ id: id, password: password }),
+                        data: ({ id: id, password: password, name: name }),
                         success: function (response) {
-                            window.location.href = "/home";
+                            window.location.href = "/";
                         },
                         error: function () {
                             alert("다시 시도해주세요");
                             $("#username").val("");
                             $("#password").val("");
+                            $("#u_name").val("");
 
                             $("#id_check").text("");
                             $("#pw_check").text("");
@@ -211,6 +227,7 @@
                     );
                     $("#username").val("");
                     $("#password").val("");
+                    $("#u_name").val("");
 
                     $("#id_check").text("");
                     $("#pw_check").text("");
@@ -223,7 +240,7 @@
         }
         );
         function goToHomePage() {
-            window.location.href = "/home";
+            window.location.href = "/";
         }
     </script>
 </body>
