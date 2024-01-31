@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/myPage.css') }}">
+</head>
+<body>
+  {{data.ff}}
+  <div class="navbar">
+    <div class="home">홈페이지</div>
+  </div>
+  <div class="outer">
+    <div class="container">
+      <div class="wishList">
+        <p class="wishTitle">작성한 글</p>
+        <div class="wish" id="AAA">
+          <div class="wishContanier">
+            <p class="wishContent">소망 내용입니다.</p>
+            <p class="wishAuthor">작성자</p>
+          </div>
+          <div class="wishDelete" onclick="onDeleteButtonDown('AAA')">
+            <p >삭제</p>
+          </div>
+        </div>
+      </div>
+      <div class="freindList">
+        <p class="friendTitle">친구 목록</p>
+        <div class="friend">
+          <p>친구 이름</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="{{ url_for('static', filename='js/myPage.js') }}"></script>
+</body>
+</html>
