@@ -9,11 +9,11 @@
 </head>
 <body>
   <div class="navbar">
-    <div class="home">홈페이지</div>
+    <div class="home" onclick="home()">홈페이지</div>
   </div>
   <div class="container">
-    <p class="title">웹 미니 소망 프로젝트</p>
-    <p class="author">작성자</p>
+    <p class="title">{{data.board.board_title}}</p>
+    <p class="author">{{data.board.username}}</p>
     <div class="commentContainer">
       <div class="comment">
         <p class="content">댓글</p>
@@ -21,5 +21,6 @@
       </div>
     </div>
   </div>
+  <script src="{{ url_for('static', filename='js/myPageDetail.js') }}"></script>
 </body>
 </html>
