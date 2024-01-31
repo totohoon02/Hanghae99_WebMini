@@ -11,3 +11,8 @@ class Song(db.Model):
   def __repr__(self):
       return f'{self.username} {self.title} 추천 by {self.username}'
   
+  class User(db.Model):
+    user_id = db.Column(db.String, nullable=False, primary_key=True)
+    username = db.Column(db.String, nullable=False)
+    password = db.Column(db.String, nullable=False)
+    frinedlist = db.Column(db.String, nullable=True)
