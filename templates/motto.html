@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+  integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <style>
+        body {
+            background-image: url("https://s3.ap-northeast-2.amazonaws.com/materials.spartacodingclub.kr/webjong/images/background.jpg");
+            background-position: center;
+            background-size: cover;
+            color: white;
+        }
+
+        /* .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        } */
+
+        .weather {
+            display: flex;
+            align-items: center;
+            margin-right: 30px;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            /* Flex 안의 아이템들을 세로 방향으로 배치합니다. */
+            justify-content: center;
+            /* 주축 방향으로 가운데 정렬합니다. */
+            align-items: center;
+            /* 교차축 방향으로 가운데 정렬합니다. */
+            height: 100vh;
+            text-align: center;
+        }
+
+        .footer {
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            text-align: center;
+            font-weight: bold;
+            padding: 20px 0;
+        }
+
+        .greeting {
+            margin-bottom: 50px;
+        }
+
+        .motto {
+            margin-bottom: 100px;
+        }
+
+        .logo {
+            height: 32px;
+            margin-left: 30px;
+        }
+        
+    @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+
+        * {
+            font-family: 'Poppins', sans-serif;
+        } 
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+</head>
+
+<body>
+    <!-- music의 navbar -->
+    <nav class="navbar border-bottom border-bottom-dark d-flex justify-content-space-between" data-bs-theme="dark">
+        <div class="ms-3">
+            <img src="https://s3.ap-northeast-2.amazonaws.com/materials.spartacodingclub.kr/webjong/images/sparta-logo.svg" alt="">
+        </div>
+        <nav class="navbar navbar-expand-lg">
+            <div class="container-fluid">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link text-white" aria-current="page" href="{{ url_for('home')}}">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="{{ url_for('music')}}">Music</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="#">Album</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white">Movie</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <div class="weather">
+            <img id="weather-icon">
+            <p id="weather-msg"></p>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="greeting">
+            <h1>Hello, {{ data.name }}</h1>
+            <h1 id="current-time"></h1>
+        </div>
+
+        <div class="motto">
+            <h3>My life's motto</h3>
+            <h2>{{ data.motto }}</h2>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p id="quoteAuthor"></p>
+        <p id="quoteContent"></p>
+    </div>
+
+    <script>
+        function displayCurrentTime() {
+            var currentTime = new Date();
+            var hours = currentTime.getHours();
+            var minutes = currentTime.getMinutes();
+            var seconds = currentTime.getSeconds();
+
+            // AM 또는 PM 설정
+            var meridiem = hours >= 12 ? "PM" : "AM";
+
+            // 시간이 12를 넘어가면 12로 나눠서 표시
+            hours = hours > 12 ? hours - 12 : hours;
+
+            // 0을 붙여 한 자리 숫자를 두 자리로 만듦
+            hours = addLeadingZero(hours);
+            minutes = addLeadingZero(minutes);
+            seconds = addLeadingZero(seconds);
+
+            // 시간을 HTML 요소에 표시
+            var timeString = hours + ":" + minutes + ":" + seconds + " " + meridiem;
+            document.getElementById("current-time").innerHTML = timeString;
+        }
+
+        function addLeadingZero(number) {
+            return number < 10 ? "0" + number : number;
+        }
+
+        // 1초마다 시간을 업데이트
+        setInterval(displayCurrentTime, 1000);
+
+        let url = "https://api.quotable.io/random";
+        fetch(url).then(res => res.json()).then(data => {
+            console.log(data);
+            let author = data['author']
+            let content = data['content']
+
+            let authorMsg = `- ${author} -`
+            let contentMsg = `" ${content} "`
+
+            $('#quoteAuthor').text(authorMsg)
+            $('#quoteContent').text(contentMsg)
+
+        })
+        let weather_url = "http://spartacodingclub.shop/sparta_api/weather/seoul";
+        fetch(weather_url)
+            .then(res => res.json())
+            .then(data => {
+                // console.log(data);
+                let temp = data['temp']
+                let icon_url = data['icon']
+
+                let message = `${temp}ºC`
+                $('#weather-msg').text(message)
+                $('#weather-icon').attr('src', icon_url)
+
+            })
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+</body>
+
+</html>
