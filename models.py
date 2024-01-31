@@ -9,8 +9,6 @@ class Song(db.Model):
   title = db.Column(db.String(100), nullable=False)
   image_url = db.Column(db.String(10000), nullable=False)
 
-  def __repr__(self):
-
 class Wish(db.Model):
   board_id = db.Column(db.String(100), primary_key=True, nullable=False) 
   username = db.Column(db.String(100), nullable=False) 
