@@ -18,14 +18,53 @@
             height: 100vh;
         }
 
+        header {
+            background-color: #808080;
+            /* 회색 배경색 */
+            padding: 60px 0;
+            position: fixed;
+            /* 헤더를 고정 */
+            top: 0;
+            /* 맨 위에 위치 */
+            width: 100%;
+            /* 폭을 100%로 설정 */
+            z-index: 1000;
+            /* 다른 요소들 위에 표시되도록 설정 */
+        }
+
+        .header-container {
+            max-width: 2000px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        h1 {
+            color: #fff;
+            margin: 0;
+        }
+
+        .rounded-button {
+            background-color: #fff;
+            color: #808080;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
         form {
+            margin-top: 70px;
+            /* 헤더의 높이만큼 아래로 내림 */
             background-color: #fff;
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             width: 400px;
-            /* 가로 크기 조절 */
         }
+
 
         label {
             display: block;
@@ -44,7 +83,7 @@
         }
 
         button {
-            background-color: #4caf50;
+            background-color: #acacac;
             color: #fff;
             padding: 10px 20px;
             border: none;
@@ -53,12 +92,24 @@
         }
 
         button:hover {
-            background-color: #45a049;
+            background-color: #acacac;
+        }
+
+        header {
+            background-color: #808080;
+            /* 회색 배경색 */
+            padding: 10px 0;
         }
     </style>
 </head>
 
 <body>
+    <header>
+        <div class="header-container">
+
+            <button class="rounded-button" onclick="goToHomePage()">홈페이지</button>
+        </div>
+    </header>
     <form>
         <label for="username">아이디:</label>
         <input type="text" id="username" name="username" required>
@@ -164,6 +215,9 @@
             }
         }
         );
+        function goToHomePage() {
+            window.location.href = "/home";
+        }
     </script>
 </body>
 
