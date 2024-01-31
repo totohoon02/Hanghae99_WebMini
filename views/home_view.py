@@ -19,8 +19,13 @@ db = SQLAlchemy(app)
 
 @bp.route("/")
 def music():
-    return render_template('home.html')
+    info_cookie = request.cookies.get('user_id')
+    if info_cookie:
+        return render_template("home2.html")
+    else:
+        return render_template("home.html")
 
+"""
 @bp.route("/login", methods=['POST'])
 def whenlogin():
     if request.method == 'POST':
@@ -35,7 +40,7 @@ def whenlogin():
             return render_template('homelogin.html', error="아이디가 틀리거나 비밀번호가 틀림")
 
     return render_template('homelogin.html')
-
+"""
 
 @bp.route("/board", methods=['POST'])
 def submitwish():
