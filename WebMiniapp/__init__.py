@@ -15,10 +15,12 @@ def create_app():
   with app.app_context():
     db.create_all()
 
-  from views import main_view, music_view, mypage_view
+  from views import main_view, music_view, mypage_view, home_view
   
   app.register_blueprint(main_view.bp)
   app.register_blueprint(music_view.bp)
   app.register_blueprint(mypage_view.bp)
+  app.register_blueprint(home_view.bp)
+
   return app
 
