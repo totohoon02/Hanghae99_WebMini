@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <title>회원가입 페이지</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 400px;
+            /* 가로 크기 조절 */
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        input {
+            width: calc(100% - 16px);
+            /* 전체 폭에서 padding 고려한 크기로 조절 */
+            padding: 8px;
+            margin-bottom: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            /* padding을 포함한 크기 계산 */
+        }
+
+        button {
+            background-color: #4caf50;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+
+<body>
+    <form>
+        <label for="username">아이디:</label>
+        <input type="text" id="username" name="username" required>
+        <button type="button" onclick="checkDuplicate()">아이디 중복확인</button>
+        <p id=id_check> </p>
+
+        <label for="password">비밀번호:</label>
+        <input type="password" id="password" name="password" required>
+
+        <label for="confirm-password">비밀번호 확인:</label>
+        <input type="password" id="confirm-password" name="confirm-password" required>
+        <p id="pw_check"></p>
+
+
+
+        <button type="button" id="signup-btn">회원가입</button>
+    </form>
+
+    <script>
+        function checkDuplicate() {
+            // 중복 확인 로직을 추가할 수 있습니다.
+            let id = $("#username").val(); // message-input의 값만 가져오기
+
+            if (id !== "") {
+                $.ajax({
+                    type: "post", // 어떤 방식으로 보낼지
+                    url: "http://127.0.0.1:8000/check", // 보낼 주소
+
+                    data: { id: id }, // 데이터를 JSON 문자열로 변환
+                    success: function (response) {
+                        $("#id_check").text("사용 가능한 아이디입니다").css("color", "green");
+                    },
+                    error: function () {
+                        $("#id_check").text("중복된 아이디입니다").css("color", "red");
+
+                    },
+                });
+            }
+        }
+
+        $(document).ready(function () {
+            $("#confirm-password, #password").on("input", function () {
+                let check_pw = $("#confirm-password").val();
+                let pw = $("#password").val();
+
+
+                if (check_pw !== "" && pw !== "") {
+                    if (check_pw !== pw) {
+                        $("#pw_check").text("비밀번호가 일치하지 않습니다").css("color", "red");
+                    } else {
+                        $("#pw_check").text("비밀번호가 일치합니다").css("color", "green");
+                    }
+                }
+            });
+        });
+
+        $("#signup-btn").click(function () {
+
+            let id = $("#username").val();
+            let password = $("#password").val();
+
+            let id_check = $("#id_check").text();
+            let pww = $("#pw_check").text();
+
+            if (id !== "" && password !== "") {
+                if (
+                    id_check === "사용 가능한 아이디입니다" &&
+                    pww === "비밀번호가 일치합니다"
+                ) {
+                    $.ajax({
+                        type: "post",
+                        url: "http://127.0.0.1:8000/signup",
+
+                        data: ({ id: id, password: password }),
+                        success: function (response) {
+                            window.location.href = "/home";
+                        },
+                        error: function () {
+                            alert("다시 시도해주세요");
+                            $("#username").val("");
+                            $("#password").val("");
+
+                            $("#id_check").text("");
+                            $("#pw_check").text("");
+                            $("#confirm-password").val("");
+                        },
+                    });
+                }
+                else {
+                    alert(
+                        "회원가입 중 오류가 발생했습니다. 아이디 중복 여부와 비밀번호 일치 여부를 확인해주세요."
+                    );
+                    $("#username").val("");
+                    $("#password").val("");
+
+                    $("#id_check").text("");
+                    $("#pw_check").text("");
+                    $("#confirm-password").val("");
+                }
+            }
+            else {
+                alert("아이디, 비밀번호를 모두 입력해주세요");
+            }
+        }
+        );
+    </script>
+</body>
+
+</html>
