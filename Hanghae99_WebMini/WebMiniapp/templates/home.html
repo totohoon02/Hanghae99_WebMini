@@ -1,0 +1,304 @@
+<!Doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap demo</title>
+    <style>
+        @import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css");
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+        }
+
+        #body {
+            background-image: url('../static/6468578.jpg');
+            background-repeat: no-repeat;
+            background-size: cover;
+            width: 100vw;
+            height: 100vh
+        }
+
+        .blur-box {
+            width: 0;
+            height: 0;
+            position: relative;
+        }
+
+        .blur-box::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: black;
+            opacity: 0.2;
+            backdrop-filter: blur(10px);
+            z-index: -1;
+        }
+
+        .header-container {
+            width: 100%;
+            height: 100px;
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            gap: 0;
+        }
+
+        .search {
+            width: 500px;
+            height: 40px;
+            border: 0;
+            border-radius: 20px 0 0 20px;
+            padding-left: 20px;
+            outline: none;
+            background-color: white;
+        }
+
+        .searchbtn {
+            border: 0;
+            width: 50px;
+            height: 40px;
+            padding: 5px;
+            border-radius: 0 20px 20px 0;
+            background-color: white;
+
+            :hover {
+                opacity: 0.5;
+            }
+        }
+
+        .search-icon {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .btn-box {
+            position: absolute;
+            right: 10%;
+            display: flex;
+            gap: 12px;
+
+            button {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                padding: 5px 13px 5px 13px;
+                border: 0;
+                border-radius: 20px;
+                background-color: rgba(0, 0, 0, 0);
+
+                p {
+                    color: #eee;
+                    margin: 0;
+                }
+
+                :hover {
+                    opacity: 0.8;
+                }
+            }
+        }
+
+        .content-container {
+            height: calc(100vh - 100px);
+            overflow-y: scroll;
+        }
+
+        .content-container::-webkit-scrollbar {
+            display: none;
+        }
+
+        .input-wish-box {
+            width: 100%;
+            height: 600px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .wish {
+            width: 700px;
+            height: 60px;
+            border: 0;
+            border-radius: 20px;
+            outline: none;
+            padding-left: 20px;
+            background-color: rgba(0, 0, 0, 0.7);
+            font-size: 20px;
+            color: #eee;
+        }
+
+        .wish-card {
+            background-color: rgba(0, 0, 0, 0.7);
+        }
+
+        .card-body {
+            flex-direction: column;
+            position: relative;
+            min-height: 300px;
+            max-height: 300px;
+            display: flex;
+            align: center;
+
+            h5 {
+                max-height: 250px;
+                overflow-y: hidden;
+                padding: 15px;
+                width: 100%;
+                color: white;
+            }
+
+            p {
+                right: 5%;
+                bottom: 5%;
+                position: absolute;
+                text-align: right;
+                width: 100%;
+                color: white;
+            }
+        }
+
+        .submit-wish {
+            outline: none;
+            border: 0;
+            border-radius: 20px;
+            padding: 12px;
+        }
+
+        .submit-wish:hover {
+            opacity: 0.7;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+
+</head>
+
+<body id="body">
+    <script>
+        const bodyEl = document.querySelector("body");
+        bodyEl.style.backgroundImage = "url('../static/6468578.jpg')";
+    </script>
+    <div class="blur-box"></div>
+    <header class="header-container">
+        <div class="search-box">
+            <input placeholder="검색" class="search">
+            </input>
+            <button class="searchbtn">
+                <img src='../static/free-icon-magnifier-71403.png' class='search-icon'>
+            </button>
+
+            <div class="btn-box">
+                <button>
+                    <p>로그인</p>
+                </button>
+                <button>
+                    <p>회원가입</p>
+                </button>
+            </div>
+        </div>
+    </header>
+    <main class="content-container">
+        <div class="input-wish-box">
+            <input placeholder="소망을 입력 해 주세요." class="wish"></input>
+            <button class="submit-wish">소망 작성</button>
+        </div>
+        <form id="searchForm" method="get" action="{{ url_for('home._list') }}">
+            <input type="hidden" id="sortboard" name="sortboard" value="{{ sortboard }}">
+        </form>
+        <div style=" display: flex; justify-content: right; margin-bottom: 20px; margin-right: 20%; ">
+            <h4 style="color: white; padding: 5px;">목록보기</h4>
+            <select class="formcontroller sortboard">
+                <option value="recent" {% if sortboard=="recent" %}selected{% endif %}>최신순</option>
+                <option value="maxcomment" {% if sortboard=='maxcomment' %}selected{% endif %}>댓글 많은 순서</option>
+                <option value="old" {% if sortboard=='old' %}selected{% endif %}>오래된순</option>
+            </select>
+        </div>
+        <div class="row row-cols-1 row-cols-md-4 g-4 mx-auto w-75 pb-5">
+            <div class="col">
+                <div class="h-100">
+                    <div class="card-body wish-card">
+                        <h5 class="card-title">소망 글 테스트
+                            소망 글 테스트
+                            소망 글 테스트
+                            소망 글 테스트
+                            소망 글 테스트
+                            소망 글 테스트
+                            소망 글 테스트
+                            소망 글 테스트
+                            소망 글 테스트
+                            소망 글 테스트
+                            소망 글 테스트
+                            소망 글 테스트
+                            소망 글 테스트
+                            소망 글 테스트소망 글 테스트소망 글 테스트소망 글 테스트소망 글 테스트소망 글 테스트소망 글 테스트소망 글 테스트소망 글 테스트소망 글 테스트소망 글 테스트소망 글
+                            테스트소망 글 테스트소망 글 테스트소망 글 테스트소망 글 테스트소망 글 테스트소망 글 테스트
+                        </h5>
+                        <p class="card-text">박찬섭</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="h-100">
+                    <div class="card-body wish-card">
+                        <h5 class="card-title">소망 글</h5>
+                        <p class="card-text">이름</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="h-100">
+                    <div class="card-body wish-card">
+                        <h5 class="card-title">소망 글</h5>
+                        <p class="card-text">이름</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="h-100">
+                    <div class="card-body wish-card">
+                        <h5 class="card-title">소망 글</h5>
+                        <p class="card-text">이름</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="h-100">
+                    <div class="card-body wish-card">
+                        <h5 class="card-title">소망 글</h5>
+                        <p class="card-text">이름</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous">
+
+            $(".sortboard").on('change', function () {
+                $("#sortboard").val($(this).val());
+            });
+
+
+
+        </script>
+
+</body>
+
+</html>
