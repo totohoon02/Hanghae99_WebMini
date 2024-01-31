@@ -1,6 +1,7 @@
+const address = "http://127.0.0.1:8000";
+
 const onBoardClick = (boardID) =>{
-  console.log(boardID);
-  fetch(`http://127.0.0.1:8000/mypage/${boardID}`, {
+  fetch(`${address}/mypage/${boardID}`, {
     method: "GET",
     headers:{
       "Content-Type": "application/json",
@@ -17,7 +18,7 @@ const onDeleteButtonDown = (wishID) =>{
   let body = {
     id : wishID
   }
-  fetch("http://127.0.0.1:8000/mypage/deleteWish", {
+  fetch(`${address}/mypage/deleteWish`, {
     method: "DELETE",
     headers:{
       "Content-Type": "application/json",
@@ -29,4 +30,4 @@ const onDeleteButtonDown = (wishID) =>{
   })
 }
 
-const home = () => {window.location.href = "http://127.0.0.1:8000/"}
+const home = () => {window.location.href = `${address}/`}

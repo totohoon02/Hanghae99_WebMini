@@ -5,6 +5,7 @@ bp = Blueprint('myPage', __name__, url_prefix="/mypage")
 
 @bp.route("/", methods=["GET"])
 def myPage():
+    # 사용자 ID를 가져와서 검색!
     boards = Wish.query.filter(Wish.username.in_(['totohoon01'])).all()
     friends = Friend.query.filter(Friend.username.in_(['totohoon01'])).all()
 
