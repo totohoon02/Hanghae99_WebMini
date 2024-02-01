@@ -19,7 +19,7 @@ class Friend(db.Model):
 
 class notice_board_list(db.Model):
   board_id = db.Column(db.Integer, primary_key=True)
-  user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'), nullable=False)
+  user_id = db.Column(db.String, db.ForeignKey('user.user_id'), nullable=False)
   username = db.Column(db.String, nullable=False)
   contents = db.Column(db.String, nullable=False)
   created_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
