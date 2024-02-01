@@ -359,7 +359,7 @@
         });
 
         function goToHomePage() {
-            window.location.href = "/sign";
+            window.location.href = "/join/sign";
         }
         $(document).ready(function () {
             $("#login-btn").click(function () {
@@ -370,7 +370,7 @@
 
                 $.ajax({
                     type: "POST",
-                    url: "http://127.0.0.1:8000/login",
+                    url: "http://127.0.0.1:8000/join/login",
                     data: ({ ids: id, passwords: password }),
                     success: function (response) {
                         window.location.href = "/";

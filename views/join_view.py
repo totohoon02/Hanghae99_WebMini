@@ -2,19 +2,14 @@ from flask import Flask, render_template, request, abort, jsonify, make_response
 import os
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
+from models import User, db
 
 bp = Blueprint('join', __name__, url_prefix="/join")
 
 
 
 
-@bp.route('/')
-def home():
-    info_cookie = request.cookies.get('user_id')
-    if info_cookie:
-        return render_template("home2.html")
-    else:
-        return render_template("home.html")
+
 
 
 @bp.route('/sign')
