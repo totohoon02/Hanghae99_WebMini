@@ -154,7 +154,7 @@
             max-height: 300px;
             display: flex;
             align: center;
-            border-radius:8px;
+            border-radius: 8px;
 
             h5 {
                 max-height: 250px;
@@ -176,25 +176,25 @@
                 left: 5%;
                 bottom: 5%;
                 position: absolute;
-                padding-left:10px;
-                padding-right:10px;
+                padding-left: 10px;
+                padding-right: 10px;
                 text-align: right;
                 width: auto;
                 color: white;
-                display:flex;
-                justify-contents:center;
-                align-items:center;
-                background-color:rgba(255,255,255,0.5);
-                border:0;
-                border-radius:20px;
+                display: flex;
+                justify-contents: center;
+                align-items: center;
+                background-color: rgba(255, 255, 255, 0.5);
+                border: 0;
+                border-radius: 20px;
 
                 .follow {
-                    color:black;
+                    color: black;
                 }
             }
 
             .follow-button:hover {
-                background-color:rgba(255,255,255,0.8);
+                background-color: rgba(255, 255, 255, 0.8);
             }
         }
 
@@ -275,33 +275,45 @@
             <input placeholder="소망을 입력 해 주세요." class="wish"></input>
             <button class="submit-wish" type="submit">소망 작성</button>
         </div>
+        <form id="searchForm" method="get" action="{{ url_for('home._list') }}">
+            <input type="hidden" id="sortboard" name="sortboard" value="{{ sortboard }}">
+        </form>
+        <div style=" display: flex; justify-content: right; margin-bottom: 20px; margin-right: 20%; ">
+            <h4 style="color: white; padding: 5px;">목록보기</h4>
+            <select class="formcontroller sortboard" name="sortboard">
+                <option value="recent" {% if sortboard=="recent" %}selected{% endif %}>최신순</option>
+                <option value="maxcomment" {% if sortboard=='maxcomment' %}selected{% endif %}>댓글 많은 순서</option>
+                <option value="old" {% if sortboard=='old' %}selected{% endif %}>오래된순</option>
+            </select>
+        </div>
+        <div class="row row-cols-1 row-cols-md-4 g-4 mx-auto w-75 pb-5">
+            {% set follow = friendList %}
+            {%for list in data%}
+            <div class="col">
+                <div class="h-100">
+                    <div class="card-body wish-card">
+                        <h5 class="card-title">{{list.contents}}</h5>
+                        <p class="card-text username">{{list.username}}</p>
 
-            <div class="row row-cols-1 row-cols-md-4 g-4 mx-auto w-75 pb-5" >
-                {% set follow = friendList %}
-                {%for list in data%}
-                <div class="col">
-                    <div class="h-100">
-                        <div class="card-body wish-card">
-                            <h5 class="card-title">{{list.contents}}</h5>
-                            <p class="card-text username">{{list.username}}</p>
+                        {% set follow_found = namespace(exist=false) %}
+                        {% for friend in follow %}
+                        {% if friend.friend_id == list.user_id %}
+                        {% set follow_found.exist = true %}
+                        {% endif %}
+                        {% endfor %}
 
-                            {% set follow_found = namespace(exist=false) %}
-                            {% for friend in follow %}
-                                {% if friend.friend_id == list.user_id %}
-                                    {% set follow_found.exist = true %}
-                                {% endif %}
-                            {% endfor %}
-
-                            {% if not follow_found.exist %}
-                                <button class="follow-button" data-user="{{ list.user_id }}" data-username="{{ list.username }}">
-                                    <p class="card-text follow" data-user="{{ list.user_id }}" data-follow="{{follow_found}}">팔로우</p>
-                                </button>
-                            {% endif %}
-                        </div>
+                        {% if not follow_found.exist %}
+                        <button class="follow-button" data-user="{{ list.user_id }}"
+                            data-username="{{ list.username }}">
+                            <p class="card-text follow" data-user="{{ list.user_id }}" data-follow="{{follow_found}}">
+                                팔로우</p>
+                        </button>
+                        {% endif %}
                     </div>
                 </div>
-                {%endfor%}
             </div>
+            {%endfor%}
+        </div>
         </div>
     </main>
 
@@ -312,7 +324,7 @@
         const key = "user_id";
         let user_id;
         let wish;
-        let searchKeyword=""
+        let searchKeyword = ""
         let endpoint = "http://127.0.0.1:8000"
 
         function getCookie(key) {
@@ -375,8 +387,8 @@
             searchKeyword = e.target.value
         });
         document.querySelector('.searchbtn').addEventListener('click', function () {
-                fetch(`http://127.0.0.1:8000/?query=${searchKeyword}`, {
-                    method: 'GET',
+            fetch(`http://127.0.0.1:8000/?query=${searchKeyword}`, {
+                method: 'GET',
 
             })
                 .then(response => {
@@ -387,9 +399,9 @@
                 .catch(error => {
                     console.error('post 요청 실패');
                 })
-                .finally(()=>{
+                .finally(() => {
                     window.location.href = `http://127.0.0.1:8000/?query=${searchKeyword}`;
-                    
+
                 })
         });
 
@@ -436,10 +448,10 @@
                 document.querySelector(".mypage-button").style.display = "block";
                 document.querySelector(".logout-button").style.display = "block";
                 document.querySelectorAll(".follow-button").forEach(function (e) {
-                    if(user_id == e.dataset.user) {
+                    if (user_id == e.dataset.user) {
                         e.style.display = "none";
                     }
-                    
+
                 });
             } else {
                 document.querySelector(".login-button").style.display = "block";
@@ -452,13 +464,13 @@
             }
         });
 
-        document.querySelectorAll(".follow-button").forEach(function(button) {
+        document.querySelectorAll(".follow-button").forEach(function (button) {
             button.addEventListener("click", function (e) {
                 const userId = e.target.dataset.user;
                 const username = e.target.dataset.username;
                 const data = {
-                    user_id : userId,
-                    username : username
+                    user_id: userId,
+                    username: username
                 }
                 fetch(`${endpoint}/friend`, {
                     method: 'POST',
@@ -467,22 +479,31 @@
                     },
                     body: JSON.stringify(data)
                 })
-                .then(response => {
-                    if (response.ok) {
-                        throw new Error('post 요청 성공');
-                    }
-                })
-                .catch(error => {
-                    console.error('post 요청 실패');
-                })
-                .finally(()=>{
-                    window.location.href = `${endpoint}/?query=${searchKeyword}`;
-                })
-                
+                    .then(response => {
+                        if (response.ok) {
+                            throw new Error('post 요청 성공');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('post 요청 실패');
+                    })
+                    .finally(() => {
+                        window.location.href = `${endpoint}/?query=${searchKeyword}`;
+                    })
+
             });
         });
 
-
+        $(".sortboard").on('change', function () {
+            const selectedValue = $(this).val();
+            $(".sortboard").val(selectedValue);
+            // 폼이 제출될 때, 빈 문자열이라면 선택된 옵션이 없는 것으로 간주하여 제출을 막습니다.
+            if (selectedValue !== "") {
+                // 폼의 sortboard 필드 값을 업데이트하고 서브밋합니다.
+                $("#sortboard").val(selectedValue);
+                $('#searchForm').submit();
+            }
+        });
 
     </script>
 </body>

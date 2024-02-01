@@ -58,3 +58,16 @@ def addfriend():
     friend_list = Friend.query.filter_by(user_id=user_cookie_id).all() if user_cookie_id else []
 
     return render_template('home.html', friendList=friend_list)
+
+@bp.route('/sort')
+def _list():
+    sortboard = request.args.get('sortboard', type=str, default='recent')
+
+    if sortboard == 'maxcomment':
+        somang_list = notice_board_list.query.order_by(notice_board_list.comment_id.desc()).all()
+    elif sortboard == 'old':
+        somang_list = notice_board_list.query.order_by(notice_board_list.created_at.asc()).all()
+    else:
+        somang_list = notice_board_list.query.order_by(notice_board_list.created_at.desc()).all()
+
+    return render_template('home.html', data=somang_list, sortboard=sortboard)
