@@ -350,17 +350,12 @@
             document.querySelector('.submit-wish').addEventListener('click', function () {
                 user_id = getCookie(key);
                 if (!user_id) {
-                    // 사용자가 로그인하지 않은 경우 처리
                     alert("로그인 해 주시길 바랍니다.")
-                    // 더 이상의 동작을 막기 위해 return false; 등을 추가할 수 있습니다.
                 } else {
-                    // 서버에 전송할 데이터를 JSON 형식으로 구성
                     const data = {
                         user_id: user_id,
                         contents: wish
                     };
-    
-                    // fetch API를 사용하여 서버에 POST 요청을 보냄
                     fetch(`${endpoint}/board`, {
                         method: 'POST',
                         headers: {
@@ -394,19 +389,6 @@
 
             function getListApi () {
                 window.location.href = `http://127.0.0.1:8000/?query=${searchKeyword}&sortby=${sortBy}`;
-                /*fetch(`http://127.0.0.1:8000//?query=${searchKeyword}&sortby=${sortBy}`, {
-                    method: 'GET',
-    
-                })
-                .then(response => {
-                    if (response.ok) {
-                        throw new Error('post 요청 성공');
-                        window.location.href = `http://127.0.0.1:8000/?query=${searchKeyword}&sortby=${sortBy}`;
-                    }
-                })
-                .catch(error => {
-                    console.error('post 요청 실패');
-                })*/
             }
 
             function getSort () {
@@ -414,19 +396,6 @@
                 let urlParams = new URLSearchParams(window.location.search);
                 let queryValue = urlParams.get('query');
                 window.location.href = `http://127.0.0.1:8000/?query=${queryValue}&sortby=${sortBy}`;
-                /*fetch(`http://127.0.0.1:8000//?query=${searchKeyword}&sortby=${sortBy}`, {
-                    method: 'GET',
-    
-                })
-                .then(response => {
-                    if (response.ok) {
-                        throw new Error('post 요청 성공');
-                        window.location.href = `http://127.0.0.1:8000/?query=${searchKeyword}&sortby=${sortBy}`;
-                    }
-                })
-                .catch(error => {
-                    console.error('post 요청 실패');
-                })*/
             }
 
             
@@ -539,39 +508,14 @@
     
                 });
             });
-    
-            /*$(".sortboard").on('change', function () {
-                const selectedValue = $(this).val();
-                $(".sortboard").val(selectedValue);
-                // 폼이 제출될 때, 빈 문자열이라면 선택된 옵션이 없는 것으로 간주하여 제출을 막습니다.
-                if (selectedValue !== "") {
-                    // 폼의 sortboard 필드 값을 업데이트하고 서브밋합니다.
-                    $("#sortboard").val(selectedValue);
-                    $('#searchForm').submit();
-                }
-            });
-              function redirectToBoard(boardId) {
-                    var url = '/wish/' + boardId;
-                    window.location.href = url;
-                }*/
-            /*$(".sortboard").on('change', function () {
-            const selectedValue = $(this).val();
-            $(".sortboard").val(selectedValue);
-            // 폼이 제출될 때, 빈 문자열이라면 선택된 옵션이 없는 것으로 간주하여 제출을 막습니다.
-            if (selectedValue !== "") {
-                // 폼의 sortboard 필드 값을 업데이트하고 서브밋합니다.
-                $("#sortboard").val(selectedValue);
-                $('#searchForm').submit();
-            }
-        });
-          function redirectToBoard(boardId) {
+        
+            function redirectToBoard(boardId) {
                 var url = '/wish/' + boardId;
                 window.location.href = url;
-            }*/
-        
-        document.querySelector('.sortboard').addEventListener("change", function (e) {
-            sortBy = e.target.value;
-        })
+            }
+            document.querySelector('.sortboard').addEventListener("change", function (e) {
+                sortBy = e.target.value;
+            })
     
     
         </script>
