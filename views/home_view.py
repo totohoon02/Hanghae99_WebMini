@@ -6,7 +6,8 @@ from models import db, notice_board_list, User, Friend
 
 bp = Blueprint('home', __name__, url_prefix="/")
 
-@bp.route("/",methods=["GET"])
+
+@bp.route("/", methods=["GET"])
 def home():
     input_keyword = request.args.get('query')
     user_cookie_id = request.cookies.get('user_id')
@@ -26,6 +27,16 @@ def home():
     
     return render_template('home.html', data=notice_list, friendList=friend_list)
 
+    print("아래와 같음")
+    print(notice_list)
+
+    if 'user_id' in request.cookies:
+        # 쿠키가 있을 때 다른 페이지로 랜더링
+        return render_template('home2.html', data=notice_list)
+    else:
+        # 쿠키가 없을 때 현재 페이지 랜더링
+        return render_template('home.html', data=notice_list)
+
 @bp.route("/board", methods=['POST'])
 def submitwish():
     jsonData = request.get_json()
@@ -39,6 +50,7 @@ def submitwish():
         db.session.commit()
     else:
         print("사용자 정보를 찾을 수 없습니다.")
+
     return render_template('home.html')
 
 @bp.route("/friend", methods=['POST'])

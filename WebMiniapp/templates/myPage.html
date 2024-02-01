@@ -31,9 +31,14 @@
       <div class="freindList">
         <p class="friendTitle">친구 목록</p>
         {% for friend in data.friends %}
-          <div class="friend" id="{{friend.friend}}">
-            <p>{{friend.friend}}</p>
+        <div class="friendContainer"  id="{{friend.friend_id}}">
+          <div class="deleteFriend" >
+            <img class="iconCancel" src="{{ url_for('static', filename='image_cancel.png')}}" alt="" onclick="onDeleteFriendDown('{{friend.friend_id}}')">
           </div>
+          <div class="friend">
+            <p>{{friend.friend_id}}</p>
+          </div>
+        </div>
         {% endfor %}
       </div>
     </div>

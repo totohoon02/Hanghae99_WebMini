@@ -268,12 +268,12 @@
                     <p class="logout-button">로그아웃</p>
                 </button>
             </div>
-        </header>
-        <main class="content-container">
-                <div class="input-wish-box">
-                    <input placeholder="소망을 입력 해 주세요." class="wish"></input>
-                    <button class="submit-wish" type="submit">소망 작성</button>
-                </div>
+    </header>
+    <main class="content-container">
+        <div class="input-wish-box">
+            <input placeholder="소망을 입력 해 주세요." class="wish"></input>
+            <button class="submit-wish" type="submit">소망 작성</button>
+        </div>
 
             <div class="row row-cols-1 row-cols-md-4 g-4 mx-auto w-75 pb-5" >
                 {% set follow = friendList %}
@@ -351,19 +351,19 @@
                     },
                     body: JSON.stringify(data)
                 })
-                .then(response => {
-                    if (response.ok) {
-                        throw new Error('post 요청 성공');
-                    }
-                })
-                .catch(error => {
-                    console.error('post 요청 실패');
-                })
-                .finally(()=>{
-                    window.location.reload();
-                })
-                }
-                
+                    .then(response => {
+                        if (response.ok) {
+                            throw new Error('post 요청 성공');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('post 요청 실패');
+                    })
+                    .finally(() => {
+                        window.location.reload();
+                    })
+            }
+
         });
 
         document.querySelector('.wish').addEventListener('change', function (e) {
@@ -374,10 +374,10 @@
             searchKeyword = e.target.value
         });
         document.querySelector('.searchbtn').addEventListener('click', function () {
-                fetch(`${endpoint}/?query=${searchKeyword}`, {
+                fetch(`http://127.0.0.1:8000/?query=${searchKeyword}`, {
                     method: 'GET',
 
-                })
+            })
                 .then(response => {
                     if (response.ok) {
                         throw new Error('post 요청 성공');
@@ -387,11 +387,11 @@
                     console.error('post 요청 실패');
                 })
                 .finally(()=>{
-                    window.location.href = `${endpoint}/?query=${searchKeyword}`;
+                    window.location.href = `http://127.0.0.1:8000/?query=${searchKeyword}`;
                     
                 })
         });
-        
+
         function goToHomePage() {
             window.location.href = "/join/sign";
         }
@@ -420,67 +420,6 @@
                 });
             });
         });
-
-        document.addEventListener("DOMContentLoaded", function () {
-            const user_id = getCookie("user_id");
-
-            if (user_id) {
-                document.querySelector(".login-button").style.display = "none";
-                document.querySelector(".signin-button").style.display = "none";
-                document.querySelector(".mypage-button").style.display = "block";
-                document.querySelector(".logout-button").style.display = "block";
-                document.querySelectorAll(".follow-button").forEach(function (e) {
-                    if(user_id == e.dataset.user) {
-                        e.style.display = "none";
-                    }
-                    
-                });
-            } else {
-                document.querySelector(".login-button").style.display = "block";
-                document.querySelector(".signin-button").style.display = "block";
-                document.querySelector(".mypage-button").style.display = "none";
-                document.querySelector(".logout-button").style.display = "none";
-                document.querySelectorAll(".follow-button").forEach(function (e) {
-                    e.style.display = "none";
-                });
-            }
-        });
-
-        document.querySelector(".logout-button").addEventListener("click", function () {
-            deleteCookie(key)
-            window.location.reload();
-        })
-
-        document.querySelectorAll(".follow-button").forEach(function(button) {
-            button.addEventListener("click", function (e) {
-                const userId = e.target.dataset.user;
-                const username = e.target.dataset.username;
-                const data = {
-                    user_id : userId,
-                    username : username
-                }
-                fetch(`${endpoint}/friend`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(data)
-                })
-                .then(response => {
-                    if (response.ok) {
-                        throw new Error('post 요청 성공');
-                    }
-                })
-                .catch(error => {
-                    console.error('post 요청 실패');
-                })
-                .finally(()=>{
-                    window.location.href = `${endpoint}/?query=${searchKeyword}`;
-                })
-                
-            });
-        });
-
 
     </script>
 </body>
