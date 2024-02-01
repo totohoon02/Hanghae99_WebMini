@@ -322,181 +322,239 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
         crossorigin="anonymous"></script>
-    <script>
-        const key = "user_id";
-        let user_id;
-        let wish;
-        let searchKeyword = ""
-        let endpoint = "http://127.0.0.1:8000"
-
-        function getCookie(key) {
-            const cookies = document.cookie.split('; ');
-            for (const cookie of cookies) {
-                const [cookieKey, cookieValue] = cookie.split('=');
-                if (cookieKey === key) {
-                    return cookieValue;
+        <script>
+            const key = "user_id";
+            const keys = "username";
+            let user_id;
+            let wish;
+            let searchKeyword = ""
+            let endpoint = "http://sanghoonkang.pythonanywhere.com"
+            let sortBy = "recent";
+    
+            function getCookie(key) {
+                const cookies = document.cookie.split('; ');
+                for (const cookie of cookies) {
+                    const [cookieKey, cookieValue] = cookie.split('=');
+                    if (cookieKey === key) {
+                        return cookieValue;
+                    }
                 }
+                return null;
             }
-            return null;
-        }
+    
+            function deleteCookie(name) {
+                document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+            }
+    
+    
+            document.querySelector('.submit-wish').addEventListener('click', function () {
+                user_id = getCookie(key);
+                if (!user_id) {
+                    // 사용자가 로그인하지 않은 경우 처리
+                    alert("로그인 해 주시길 바랍니다.")
+                    // 더 이상의 동작을 막기 위해 return false; 등을 추가할 수 있습니다.
+                } else {
+                    // 서버에 전송할 데이터를 JSON 형식으로 구성
+                    const data = {
+                        user_id: user_id,
+                        contents: wish
+                    };
+    
+                    // fetch API를 사용하여 서버에 POST 요청을 보냄
+                    fetch(`${endpoint}/board`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(data)
+                    })
+                        .then(response => {
+                            if (response.ok) {
+                                throw new Error('post 요청 성공');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('post 요청 실패');
+                        })
+                        .finally(() => {
+                            window.location.reload();
+                        })
+                }
+    
+            });
+    
+            document.querySelector('.wish').addEventListener('change', function (e) {
+                wish = e.target.value
+            });
+    
+            document.querySelector('.search').addEventListener('change', function (e) {
+                
+                searchKeyword = e.target.value
+            });
 
-        function deleteCookie(name) {
-            document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-        }
-
-
-        document.querySelector('.submit-wish').addEventListener('click', function () {
-            user_id = getCookie(key);
-            if (!user_id) {
-                // 사용자가 로그인하지 않은 경우 처리
-                alert("로그인 해 주시길 바랍니다.")
-                // 더 이상의 동작을 막기 위해 return false; 등을 추가할 수 있습니다.
-            } else {
-                // 서버에 전송할 데이터를 JSON 형식으로 구성
-                const data = {
-                    user_id: user_id,
-                    contents: wish
-                };
-
-                // fetch API를 사용하여 서버에 POST 요청을 보냄
-                fetch(`${endpoint}/board`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(data)
+            function getListApi () {
+                window.location.href = `http://127.0.0.1:8000/?query=${searchKeyword}&sortby=${sortBy}`;
+                /*fetch(`http://127.0.0.1:8000//?query=${searchKeyword}&sortby=${sortBy}`, {
+                    method: 'GET',
+    
                 })
-                    .then(response => {
-                        if (response.ok) {
-                            throw new Error('post 요청 성공');
-                        }
-                    })
-                    .catch(error => {
-                        console.error('post 요청 실패');
-                    })
-                    .finally(() => {
-                        window.location.reload();
-                    })
-            }
-
-        });
-
-        document.querySelector('.wish').addEventListener('change', function (e) {
-            wish = e.target.value
-        });
-
-        document.querySelector('.search').addEventListener('change', function (e) {
-            searchKeyword = e.target.value
-        });
-        document.querySelector('.searchbtn').addEventListener('click', function () {
-            fetch(`http://127.0.0.1:8000/?query=${searchKeyword}`, {
-                method: 'GET',
-
-            })
                 .then(response => {
                     if (response.ok) {
                         throw new Error('post 요청 성공');
+                        window.location.href = `http://127.0.0.1:8000/?query=${searchKeyword}&sortby=${sortBy}`;
                     }
                 })
                 .catch(error => {
                     console.error('post 요청 실패');
-                })
-                .finally(() => {
-                    window.location.href = `http://127.0.0.1:8000/?query=${searchKeyword}`;
-
-                })
-        });
-
-        function goToHomePage() {
-            window.location.href = "/join/sign";
-        }
-
-        function goToMyPage() {
-            window.location.href = "/mypage";
-        }
-
-        $(document).ready(function () {
-            $("#login-btn").click(function () {
-
-
-                let id = $("#user_name").val();
-                let password = $("#pass_word").val();
-
-                $.ajax({
-                    type: "POST",
-                    url: `${endpoint}/join/login`,
-                    data: ({ ids: id, passwords: password }),
-                    success: function (response) {
-                        window.location.href = "/";
-                    },
-                    error: function () {
-                        alert("다시 시도해주세요");
-                    }
-                });
-            });
-        });
-
-        document.querySelector(".logout-button").addEventListener("click", function () {
-            deleteCookie(key)
-            window.location.reload();
-        })
-
-        document.addEventListener("DOMContentLoaded", function () {
-            const user_id = getCookie("user_id");
-
-            if (user_id) {
-                document.querySelector(".login-button").style.display = "none";
-                document.querySelector(".signin-button").style.display = "none";
-                document.querySelector(".mypage-button").style.display = "block";
-                document.querySelector(".logout-button").style.display = "block";
-                document.querySelectorAll(".follow-button").forEach(function (e) {
-                    if (user_id == e.dataset.user) {
-                        e.style.display = "none";
-                    }
-
-                });
-            } else {
-                document.querySelector(".login-button").style.display = "block";
-                document.querySelector(".signin-button").style.display = "block";
-                document.querySelector(".mypage-button").style.display = "none";
-                document.querySelector(".logout-button").style.display = "none";
-                document.querySelectorAll(".follow-button").forEach(function (e) {
-                    e.style.display = "none";
-                });
+                })*/
             }
-        });
 
-        document.querySelectorAll(".follow-button").forEach(function (button) {
-            button.addEventListener("click", function (e) {
-                const userId = e.target.dataset.user;
-                const username = e.target.dataset.username;
-                const data = {
-                    user_id: userId,
-                    username: username
-                }
-                fetch(`${endpoint}/friend`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(data)
+            function getSort () {
+                let currentURL = window.location.href;
+                let urlParams = new URLSearchParams(window.location.search);
+                let queryValue = urlParams.get('query');
+                window.location.href = `http://127.0.0.1:8000/?query=${queryValue}&sortby=${sortBy}`;
+                /*fetch(`http://127.0.0.1:8000//?query=${searchKeyword}&sortby=${sortBy}`, {
+                    method: 'GET',
+    
                 })
-                    .then(response => {
-                        if (response.ok) {
-                            throw new Error('post 요청 성공');
-                        }
-                    })
-                    .catch(error => {
-                        console.error('post 요청 실패');
-                    })
-                    .finally(() => {
-                        window.location.href = `${endpoint}/?query=${searchKeyword}`;
-                    })
+                .then(response => {
+                    if (response.ok) {
+                        throw new Error('post 요청 성공');
+                        window.location.href = `http://127.0.0.1:8000/?query=${searchKeyword}&sortby=${sortBy}`;
+                    }
+                })
+                .catch(error => {
+                    console.error('post 요청 실패');
+                })*/
+            }
 
+            
+            document.querySelector('.searchbtn').addEventListener('click', function () {
+                getListApi();
             });
-        });
 
-        $(".sortboard").on('change', function () {
+            document.querySelector('.sortboard').addEventListener('change', function (e) {
+                sortBy = e.target.value;
+                getSort();
+            });
+    
+            function goToHomePage() {
+                window.location.href = "/join/sign";
+            }
+    
+            function goToMyPage() {
+                window.location.href = "/mypage";
+            }
+    
+            $(document).ready(function () {
+                $("#login-btn").click(function () {
+    
+    
+                    let id = $("#user_name").val();
+                    let password = $("#pass_word").val();
+    
+                    $.ajax({
+                        type: "POST",
+                        url: `${endpoint}/join/login`,
+                        data: ({ ids: id, passwords: password }),
+                        success: function (response) {
+                            window.location.href = "/";
+                        },
+                        error: function () {
+                            alert("다시 시도해주세요");
+                        }
+                    });
+                });
+            });
+    
+            document.querySelector(".logout-button").addEventListener("click", function () {
+                deleteCookie(key)
+                deleteCookie(keys)
+                window.location.reload();
+            })
+    
+            document.addEventListener("DOMContentLoaded", function () {
+                let currentURL = window.location.href;
+                let urlParams = new URLSearchParams(window.location.search);
+                let sortValue = urlParams.get('sortby');
+                let selectElement = document.querySelector('.sortboard');
+                const user_id = getCookie("user_id");
+
+                for (let i = 0; i < selectElement.options.length; i++) {
+                    if (selectElement.options[i].value === sortValue) {
+                        selectElement.options[i].selected = true;
+                        break;
+                    }
+                }
+    
+                if (user_id) {
+                    document.querySelector(".login-button").style.display = "none";
+                    document.querySelector(".signin-button").style.display = "none";
+                    document.querySelector(".mypage-button").style.display = "block";
+                    document.querySelector(".logout-button").style.display = "block";
+                    document.querySelectorAll(".follow-button").forEach(function (e) {
+                        if (user_id == e.dataset.user) {
+                            e.style.display = "none";
+                        }
+    
+                    });
+                } else {
+                    document.querySelector(".login-button").style.display = "block";
+                    document.querySelector(".signin-button").style.display = "block";
+                    document.querySelector(".mypage-button").style.display = "none";
+                    document.querySelector(".logout-button").style.display = "none";
+                    document.querySelectorAll(".follow-button").forEach(function (e) {
+                        e.style.display = "none";
+                    });
+                }
+            });
+    
+            document.querySelectorAll(".follow-button").forEach(function (button) {
+                button.addEventListener("click", function (e) {
+                    const userId = e.target.dataset.user;
+                    const username = e.target.dataset.username;
+                    const data = {
+                        user_id: userId,
+                        username: username
+                    }
+                    fetch(`${endpoint}/friend`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(data)
+                    })
+                        .then(response => {
+                            if (response.ok) {
+                                throw new Error('post 요청 성공');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('post 요청 실패');
+                        })
+                        .finally(() => {
+                            window.location.href = `${endpoint}/?query=${searchKeyword}`;
+                        })
+    
+                });
+            });
+    
+            /*$(".sortboard").on('change', function () {
+                const selectedValue = $(this).val();
+                $(".sortboard").val(selectedValue);
+                // 폼이 제출될 때, 빈 문자열이라면 선택된 옵션이 없는 것으로 간주하여 제출을 막습니다.
+                if (selectedValue !== "") {
+                    // 폼의 sortboard 필드 값을 업데이트하고 서브밋합니다.
+                    $("#sortboard").val(selectedValue);
+                    $('#searchForm').submit();
+                }
+            });
+              function redirectToBoard(boardId) {
+                    var url = '/wish/' + boardId;
+                    window.location.href = url;
+                }*/
+            /*$(".sortboard").on('change', function () {
             const selectedValue = $(this).val();
             $(".sortboard").val(selectedValue);
             // 폼이 제출될 때, 빈 문자열이라면 선택된 옵션이 없는 것으로 간주하여 제출을 막습니다.
@@ -509,10 +567,14 @@
           function redirectToBoard(boardId) {
                 var url = '/wish/' + boardId;
                 window.location.href = url;
-            }
-
-
-    </script>
+            }*/
+        
+        document.querySelector('.sortboard').addEventListener("change", function (e) {
+            sortBy = e.target.value;
+        })
+    
+    
+        </script>
 </body>
 
 </html>
