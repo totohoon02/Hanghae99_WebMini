@@ -1,16 +1,7 @@
-from flask import Flask, render_template, request, abort, jsonify, make_response, url_for, redirect, request
-import os
-from flask_sqlalchemy import SQLAlchemy
-from datetime import datetime
+from flask import Flask, render_template, request, abort, jsonify, make_response, url_for, redirect, Blueprint
 from models import User, db
 
 bp = Blueprint('join', __name__, url_prefix="/join")
-
-
-
-
-
-
 
 @bp.route('/sign')
 def join():

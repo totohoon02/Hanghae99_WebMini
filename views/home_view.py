@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for, Blueprint
 import os
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
-from dp import 
+# from dp import 
 
 bp = Blueprint('home', __name__, url_prefix="/")
 
