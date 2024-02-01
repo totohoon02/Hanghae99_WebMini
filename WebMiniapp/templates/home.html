@@ -327,7 +327,7 @@
         let user_id;
         let wish;
         let searchKeyword = ""
-        let endpoint = "http://127.0.0.1:8000"
+        let endpoint = "http://sanghoonkang.pythonanywhere.com"
 
         function getCookie(key) {
             const cookies = document.cookie.split('; ');
@@ -389,7 +389,7 @@
             searchKeyword = e.target.value
         });
         document.querySelector('.searchbtn').addEventListener('click', function () {
-            fetch(`http://127.0.0.1:8000/?query=${searchKeyword}`, {
+            fetch(`http://sanghoonkang.pythonanywhere.com/?query=${searchKeyword}`, {
                 method: 'GET',
 
             })
@@ -402,7 +402,7 @@
                     console.error('post 요청 실패');
                 })
                 .finally(() => {
-                    window.location.href = `http://127.0.0.1:8000/?query=${searchKeyword}`;
+                    window.location.href = `http://sanghoonkang.pythonanywhere.com/?query=${searchKeyword}`;
 
                 })
         });
