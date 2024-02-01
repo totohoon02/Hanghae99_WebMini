@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/myPageDetail.css') }}">
+</head>
+<body>
+  <div class="navbar">
+    <div class="home" onclick="home()">홈페이지</div>
+  </div>
+  <div class="container">
+    <p class="title">{{data.board.board_title}}</p>
+    <p class="author">{{data.board.username}}</p>
+    <div class="commentContainer">
+      <div class="comment">
+        <p class="content">댓글</p>
+        <p class="comment_author">이름</p>
+      </div>
+    </div>
+  </div>
+  <script src="{{ url_for('static', filename='js/myPageDetail.js') }}"></script>
+</body>
+</html>

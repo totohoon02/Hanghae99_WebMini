@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/myPage.css') }}">
+</head>
+<body>
+  <div class="navbar">
+    <div class="home" onclick="home()">홈페이지</div>
+  </div>
+  <div class="outer">
+    <div class="container">
+      <div class="wishList">
+        <p class="wishTitle">작성한 글</p>
+        {% for board in data.boards %}
+          <div class="wish" id={{board.board_id}} onclick="onBoardClick('{{board.board_id}}')">
+            <div class="wishContanier">
+              <p class="wishContent">{{board.contents}}</p>
+              <p class="wishAuthor">{{board.username}}</p>
+            </div>
+            <div class="wishDelete" onclick="onDeleteButtonDown('{{board.board_id}}')">
+              <p >삭제</p>
+            </div>
+          </div>
+        {% endfor %}
+        
+      </div>
+      <div class="freindList">
+        <p class="friendTitle">친구 목록</p>
+        {% for friend in data.friends %}
+          <div class="friend" id="{{friend.friend}}">
+            <p>{{friend.friend}}</p>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+  <script src="{{ url_for('static', filename='js/myPage.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,102 @@
+/* NAVBAR */
+.navbar{
+  width: 100vw;
+  height: 15vh;
+  background-color: #d9d9d9;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.home{
+  font-size: 18px;
+  background-color: white;
+  color: black;
+  width: fit-content;
+  padding: 15px 30px;
+  border-radius: 25px;
+}
+.home:hover{
+  cursor: pointer;
+}
+
+.outer{
+  display: flex;
+  justify-content: center;
+}
+
+/* CONTAINER */
+.container{
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-start;
+  margin-top: 50px;
+  width: 80vw;
+}
+
+.wishList{
+  width: 70%;
+  margin-right: 10px;
+}
+
+.wishTitle{
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+.wish{
+  display: flex;
+  flex-direction: column;
+  align-items: end;
+  margin-bottom: 10px;
+}
+.wishContanier{
+  background-color: #d9d9d9;
+  width: 100%;
+  border-radius: 5px;
+  margin-bottom: 5px;
+}
+
+.wishContent{
+  padding: 10px 0px 0px 10px;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+.wishContanier:hover{
+  cursor: pointer;
+}
+.wishAuthor{
+  font-size: 12px;
+  text-align: end;
+  margin-right: 10px;
+  padding-bottom: 10px;
+}
+
+.wishDelete{
+  background-color: #d9d9d9;
+  text-align: end;
+  padding: 5px;
+  width: fit-content;
+  font-size: 12px;
+}
+.wishDelete:hover{
+  cursor: pointer;
+}
+
+.freindList{
+  width: 30%;
+  margin-left: 10px;
+}
+
+.friendTitle{
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+.friend{
+  width: 30%;
+  background-color: #d9d9d9;
+  text-align: center;
+  padding: 10px 20px;
+  border-radius: 5px;
+  margin-bottom: 5px;
+}
