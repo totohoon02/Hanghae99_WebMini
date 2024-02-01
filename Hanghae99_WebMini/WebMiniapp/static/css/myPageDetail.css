@@ -1,0 +1,72 @@
+/* NAVBAR */
+.navbar{
+  width: 100vw;
+  height: 15vh;
+  background-color: #d9d9d9;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.home{
+  font-size: 18px;
+  background-color: white;
+  color: black;
+  width: fit-content;
+  padding: 15px 30px;
+  border-radius: 25px;
+}
+.home:hover{
+  cursor: pointer;
+}
+
+.container{
+  display: flex;
+  width: 100vw;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 100px;
+}
+.title{
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+.author{
+  font-size: 18px;
+  margin-bottom: 50px;
+}
+.commentContainer{
+  display: flex;
+  width: 50%;
+  justify-content: center;
+}
+.comment{
+  width: 100%;
+  border-radius: 10px;
+  background-color: #d9d9d9;
+  padding: 25px;
+  
+}
+.content{
+  margin-bottom: 10px;
+  font-size: 18px;
+}
+.comment_author{
+  text-align: right;
+}
+ .comment input {
+    width: 100%;
+    height: 100%; /* 세로 길이를 100%로 설정 */
+    border: none;
+    outline: none;
+    background-color: transparent;
+     margin-top: -10px; /* 위쪽으로 10px 이동 */
+}
+.commentButton {
+    background-color: #808080;
+    border: none;
+    border-radius: 5px; /* 버튼의 둥근 모서리 설정 */
+    color: #fff;
+    padding: 20px;
+    cursor: pointer;
+}
