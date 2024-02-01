@@ -15,22 +15,10 @@ def create_app():
   
   
   with app.app_context():
-    #### 테스트용 ####
-    # db.drop_all()
     db.create_all()
 
-    #TEST
-    # user =  User(user_id = "user",
-    #               username="user",
-    #               password="1234",
-    #               frinedlist=None)
-    # db.session.add(user)
-    # db.session.commit()
-
-  from views import main_view, music_view, mypage_view, home_view, join_view
+  from views import mypage_view, home_view, join_view
   
-  # app.register_blueprint(main_view.bp)
-  app.register_blueprint(music_view.bp)
   app.register_blueprint(mypage_view.bp)
   app.register_blueprint(home_view.bp)
   app.register_blueprint(join_view.bp)
