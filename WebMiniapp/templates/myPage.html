@@ -16,8 +16,8 @@
       <div class="wishList">
         <p class="wishTitle">작성한 글</p>
         {% for board in data.boards %}
-          <div class="wish" id={{board.board_id}} onclick="onBoardClick('{{board.board_id}}')">
-            <div class="wishContanier">
+          <div class="wish" id={{board.board_id}}>
+            <div class="wishContanier" onclick="onBoardClick('{{board.board_id}}')">
               <p class="wishContent">{{board.contents}}</p>
               <p class="wishAuthor">{{board.username}}</p>
             </div>

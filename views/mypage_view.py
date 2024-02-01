@@ -17,7 +17,8 @@ def myPage():
 @bp.route("/deleteWish", methods=["DELETE"])
 def deleteWish():
     wishID = request.json['id']
-    notice_board_list.query.filter(notice_board_list.board_id == wishID).delete()
+    deleteBoard = notice_board_list.query.filter_by(board_id = wishID).first()
+    db.session.delete(deleteBoard)
     db.session.commit()
     return "200"
 
