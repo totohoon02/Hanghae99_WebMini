@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for, Blueprint
 import os
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
-from models import db, notice_board_list, User, Friend
+from models import db, notice_board_list, User, Friend, comment_list
 
 bp = Blueprint('home', __name__, url_prefix="/")
 
@@ -71,3 +71,30 @@ def _list():
         somang_list = notice_board_list.query.order_by(notice_board_list.created_at.desc()).all()
 
     return render_template('home.html', data=somang_list, sortboard=sortboard)
+
+
+@bp.route("/get_comments")
+def update():
+    board_id = request.args.get('boardId')
+    comments = comment_list.query.filter(
+        comment_list.board_id == board_id).all()
+    return {'data': comments}
+
+
+@bp.route("/wish/<wishid>")
+def godetail(wishid):
+  # 글 내용, 댓글리스트 가져오기
+  board = notice_board_list.query.filter(
+      notice_board_list.board_id == wishid).one()
+  test = True
+  comments = comment_list.query.filter(comment_list.board_id == wishid).all()
+  usernames = [comment.comment_user_id for comment in comments]
+  first_comment_username = usernames[0] if usernames else ""
+# User 테이블에서 작성자 정보 가져오기 (예시로 첫 번째 댓글의 작성자 정보 사용)
+  user = User.query.filter(User.username == first_comment_username).first()
+
+# User 테이블에서 가져온 사용자 정보에서 username 추출
+  username = user.username if user else ""
+  return render_template("myPageDetail.html", data={
+      "board": board, "test": test, "comments": comments, "username": username
+  })

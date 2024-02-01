@@ -291,7 +291,7 @@
             {%for list in data%}
             <div class="col">
                 <div class="h-100">
-                    <div class="card-body wish-card">
+                    <div class="card-body wish-card" id = {{list.board_id}}>
                         <h5 class="card-title">{{list.contents}}</h5>
                         <p class="card-text username">{{list.username}}</p>
 
@@ -504,6 +504,18 @@
                 $('#searchForm').submit();
             }
         });
+        document.addEventListener('DOMContentLoaded', function () {
+                // 모든 wish-card 요소에 클릭 이벤트 리스너 추가
+                var wishCards = document.querySelectorAll('.wish-card');
+                wishCards.forEach(function (card) {
+                    card.addEventListener('click', function () {
+                        // 클릭된 카드의 id를 추출하여 URL 생성
+                        var cardId = card.id;
+                        var url = '/wish/' + cardId;  // 원하는 URL로 수정
+                        window.location.href = url;
+                    });
+                });
+            });
 
     </script>
 </body>

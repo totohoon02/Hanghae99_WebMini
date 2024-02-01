@@ -7,6 +7,7 @@
   <title>Document</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/myPageDetail.css') }}">
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 </head>
 
 <body>
@@ -17,16 +18,28 @@
     <p class="title">{{data.board.board_title}}</p>
     <p class="title">{{data.board.contents}}</p>
     <p class="author">{{data.board.username}}</p>
+    {% for comment in data.comments %}
+    <div class="comment-item">
+      <p>{{ comment.comment_user_id }} 님의 댓글: {{ comment.comment }}</p>
+      <p id='update'> </p>
+    </div>
+    {% endfor %}
     <div class="commentContainer">
       <div class="comment">
+
+
         <p class="content">댓글</p>
+        {%if data.test %}
+        <input id="com">
+
         <div class="input-group">
 
-          <input type="text" id="commentAuthor" name="comment_author" required>
+
         </div>
 
       </div>
       <button type="submit" class="commentButton">작성</button>
+      {% endif %}
     </div>
   </div>
   </div>

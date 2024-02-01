@@ -29,3 +29,11 @@ class User(db.Model):
   username = db.Column(db.String, nullable=False)
   password = db.Column(db.String, nullable=False)
   friendlist = db.Column(db.String, nullable=True)
+
+class comment_list(db.Model):
+  board_id = db.Column(db.String,  db.ForeignKey(
+      'notice_board_list.board_id'), nullable=False)
+  comment_user_id = db.Column(db.String, nullable=False)
+  comment_id = db.Column(db.Integer, primary_key=True)
+  comment = db.Column(db.String, nullable=False)
+  created_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
