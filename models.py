@@ -24,7 +24,9 @@ class Friend(db.Model):
     
 
 class notice_board_list(db.Model):
-  user_id = db.Column(db.Integer, primary_key=True)
+  board_id = db.Column(db.Integer, primary_key=True)
+  user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'), nullable=False)
+  username = db.Column(db.String, nullable=False)
   contents = db.Column(db.String, nullable=False)
   created_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
   comment_id = db.Column(db.Integer, nullable=True)
@@ -33,4 +35,4 @@ class User(db.Model):
   user_id = db.Column(db.Integer, primary_key=True)
   username = db.Column(db.String, nullable=False)
   password = db.Column(db.String, nullable=False)
-  frinedlist = db.Column(db.String, nullable=True)
+  friendlist = db.Column(db.String, nullable=True)
