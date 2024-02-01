@@ -98,3 +98,16 @@ def godetail(wishid):
   return render_template("myPageDetail.html", data={
       "board": board, "test": test, "comments": comments, "username": username
   })
+
+
+@bp.route('/add_comment', methods=['POST'])
+def add_comment():
+    data = request.get_json()
+    board_id = data.get('board_id')
+    comment_id = data.get('comment_id')
+    comment_content = data.get('comment_content')
+    new_comment = comment_list(
+        board_id=board_id, comment_user_id=comment_id, comment=comment_content)
+    db.session.add(new_comment)
+    db.session.commit()
+    return ({'message': '댓글이 성공적으로 추가되었습니다.'})
