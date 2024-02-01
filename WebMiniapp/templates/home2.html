@@ -267,7 +267,7 @@
                 };
 
                 // fetch API를 사용하여 서버에 POST 요청을 보냄
-                fetch('http://127.0.0.1:8000/board', {
+                fetch('http://sanghoonkang.pythonanywhere.com/board', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -298,7 +298,7 @@
             searchKeyword = e.target.value
         });
         document.querySelector('.searchbtn').addEventListener('click', function () {
-            fetch(`http://127.0.0.1:8000/?query=${searchKeyword}`, {
+            fetch(`http://sanghoonkang.pythonanywhere.com/?query=${searchKeyword}`, {
                 method: 'GET',
 
             })
@@ -311,7 +311,7 @@
                     console.error('post 요청 실패');
                 })
                 .finally(() => {
-                    window.location.href = `http://127.0.0.1:8000/?query=${searchKeyword}`;
+                    window.location.href = `http://sanghoonkang.pythonanywhere.com/?query=${searchKeyword}`;
 
                 })
         });

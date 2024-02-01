@@ -42,8 +42,10 @@ def login():
     if check:
         resp = make_response("Cookie Setting Complete")
         resp.set_cookie('user_id', ids)
+        resp.set_cookie('username', check.username)
         return resp
     return abort(404)
+
 
 
 @bp.route("/home")
