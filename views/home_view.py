@@ -2,45 +2,26 @@ from flask import Flask, render_template, request, redirect, url_for, Blueprint
 import os
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
-# from dp import 
+from models import db, notice_board_list, User
 
 bp = Blueprint('home', __name__, url_prefix="/")
 
+@bp.route("/",methods=["GET"])
+def home():
+    input_keyword = request.args.get('query')
 
-
-app = Flask(__name__)
-
-basedir = os.path.abspath(os.path.dirname(__file__))
-app.config['SQLALCHEMY_DATABASE_URI'] =\
-    'sqlite:///' + os.path.join(basedir, 'database.db')
-
-
-db = SQLAlchemy(app)
-
-@bp.route("/")
-def music():
-    info_cookie = request.cookies.get('user_id')
-    if info_cookie:
-        return render_template("home2.html")
+    if input_keyword:
+        notice_list = notice_board_list.query.filter(
+            (notice_board_list.contents.like(f"%{input_keyword}%")) |
+            (notice_board_list.username.like(f"%{input_keyword}%"))
+        ).all()
     else:
-        return render_template("home.html")
+        notice_list = notice_board_list.query.all()
 
-"""
-@bp.route("/login", methods=['POST'])
-def whenlogin():
-    if request.method == 'POST':
-        username = request.form.get('username')  # 폼에서 'username' 필드를 가져옴
-        password = request.form.get('password')  # 폼에서 'password' 필드를 가져옴
-        user = User.query.filter_by(username=username, password=password).first()
-
-        userInfo = User.query.all()
-        if user:
-            return redirect(url_for('home.music'))
-        else:
-            return render_template('homelogin.html', error="아이디가 틀리거나 비밀번호가 틀림")
-
-    return render_template('homelogin.html')
-"""
+    print("아래와 같음")
+    print(notice_list)
+    
+    return render_template('home.html', data=notice_list)
 
 @bp.route("/board", methods=['POST'])
 def submitwish():
@@ -48,13 +29,14 @@ def submitwish():
     userId = jsonData.get('user_id')
     contents = jsonData.get('contents')
     
-    newBoard = notice_board_list(user_id = userId, contents = contents)
-    db.session.add(newBoard)
-    db.session.commit()
-    
-    print(userId)
-    print(contents)
+    user = User.query.filter_by(user_id=1).first()
+    if user:
+        newBoard = notice_board_list(user_id=1, username='박찬섭', contents=contents)
+        db.session.add(newBoard)
+        db.session.commit()
+    else:
+        print("사용자 정보를 찾을 수 없습니다.")
     return render_template('home.html')
 
-if __name__ == "__main__":
-    app.run(debug=True, port=8000)
+    
+    

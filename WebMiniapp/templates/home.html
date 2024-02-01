@@ -237,69 +237,24 @@
                     <p onclick="goToHomePage()">회원가입</p>
                 </button>
             </div>
-        </div>
-    </header>
-    <main class="content-container">
-        <div class="input-wish-box">
-            <input placeholder="소망을 입력 해 주세요." class="wish"></input>
-            <button class="submit-wish">소망 작성</button>
-        </div>
+        </header>
+        <main class="content-container">
+                <div class="input-wish-box">
+                    <input placeholder="소망을 입력 해 주세요." class="wish"></input>
+                    <button class="submit-wish" type="submit">소망 작성</button>
+                </div>
 
-        <div class="row row-cols-1 row-cols-md-4 g-4 mx-auto w-75 pb-5">
-            <div class="col">
-                <div class="h-100">
-                    <div class="card-body wish-card">
-                        <h5 class="card-title">소망 글 테스트
-                            소망 글 테스트
-                            소망 글 테스트
-                            소망 글 테스트
-                            소망 글 테스트
-                            소망 글 테스트
-                            소망 글 테스트
-                            소망 글 테스트
-                            소망 글 테스트
-                            소망 글 테스트
-                            소망 글 테스트
-                            소망 글 테스트
-                            소망 글 테스트
-                            소망 글 테스트소망 글 테스트소망 글 테스트소망 글 테스트소망 글 테스트소망 글 테스트소망 글 테스트소망 글 테스트소망 글 테스트소망 글 테스트소망 글 테스트소망 글
-                            테스트소망 글 테스트소망 글 테스트소망 글 테스트소망 글 테스트소망 글 테스트소망 글 테스트
-                        </h5>
-                        <p class="card-text">박찬섭</p>
+            <div class="row row-cols-1 row-cols-md-4 g-4 mx-auto w-75 pb-5" >
+                {%for list in data%}
+                <div class="col">
+                    <div class="h-100">
+                        <div class="card-body wish-card">
+                            <h5 class="card-title">{{list.contents}}</h5>
+                            <p class="card-text">{{list.username}}</p>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col">
-                <div class="h-100">
-                    <div class="card-body wish-card">
-                        <h5 class="card-title">소망 글</h5>
-                        <p class="card-text">이름</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col">
-                <div class="h-100">
-                    <div class="card-body wish-card">
-                        <h5 class="card-title">소망 글</h5>
-                        <p class="card-text">이름</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col">
-                <div class="h-100">
-                    <div class="card-body wish-card">
-                        <h5 class="card-title">소망 글</h5>
-                        <p class="card-text">이름</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col">
-                <div class="h-100">
-                    <div class="card-body wish-card">
-                        <h5 class="card-title">소망 글</h5>
-                        <p class="card-text">이름</p>
-                    </div>
-                </div>
+                {%endfor%}
             </div>
         </div>
     </main>
@@ -311,6 +266,7 @@
         const key = "user_id";
         let user_id;
         let wish;
+
         function getCookie(key) {
             const cookies = document.cookie.split('; ');
             for (const cookie of cookies) {
@@ -343,21 +299,48 @@
                     },
                     body: JSON.stringify(data)
                 })
-                    .then(response => {
-                        if (response.ok) {
-                            throw new Error('post 요청 성공');
-                        }
-                    })
-                    .catch(error => {
-                        console.error('post 요청 실패');
-                    });
-            }
+                .then(response => {
+                    if (response.ok) {
+                        throw new Error('post 요청 성공');
+                    }
+                })
+                .catch(error => {
+                    console.error('post 요청 실패');
+                })
+                .finally(()=>{
+                    window.location.reload();
+                })
+                }
+                
         });
 
         document.querySelector('.wish').addEventListener('change', function (e) {
             wish = e.target.value
         });
 
+        let searchKeyword;
+        document.querySelector('.search').addEventListener('change', function (e) {
+            searchKeyword = e.target.value
+        });
+        document.querySelector('.searchbtn').addEventListener('click', function () {
+                fetch(`http://127.0.0.1:8000/?query=${searchKeyword}`, {
+                    method: 'GET',
+
+                })
+                .then(response => {
+                    if (response.ok) {
+                        throw new Error('post 요청 성공');
+                    }
+                })
+                .catch(error => {
+                    console.error('post 요청 실패');
+                })
+                .finally(()=>{
+                    window.location.href = `http://127.0.0.1:8000/?query=${searchKeyword}`;
+                    
+                })
+        });
+        
         function goToHomePage() {
             window.location.href = "/join/sign";
         }
