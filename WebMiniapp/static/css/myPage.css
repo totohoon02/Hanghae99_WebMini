@@ -100,3 +100,15 @@
   border-radius: 5px;
   margin-bottom: 5px;
 }
+.deleteFriend{
+  display: flex;
+  width: 50%;
+  justify-content: flex-end;
+}
+.iconCancel{
+  width: 18px;
+  height: 18px;
+}
+.iconCancel:hover{
+  cursor: pointer;
+}

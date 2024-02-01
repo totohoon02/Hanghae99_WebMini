@@ -23,8 +23,14 @@ def deleteWish():
 
 @bp.route("/deleteFriend", methods=["DELETE"])
 def deleteFriend():
-    wishID = request.json['id']
-    return "200"
+    friendID = request.json['id']
+    print(friendID)
+    try:
+        Friend.query.filter(Friend.friend_id == friendID).delete()
+        db.session.commit()
+        return {"status" : "200"}
+    except:
+        raise Exception("친구 삭제 실패")
 
 @bp.route("/<wishid>")
 def myPageDetail(wishid):
