@@ -324,6 +324,7 @@
         crossorigin="anonymous"></script>
     <script>
         const key = "user_id";
+        const keys = "username";
         let user_id;
         let wish;
         let searchKeyword = ""
@@ -438,6 +439,7 @@
 
         document.querySelector(".logout-button").addEventListener("click", function () {
             deleteCookie(key)
+            deleteCookie(keys)
             window.location.reload();
         })
 
