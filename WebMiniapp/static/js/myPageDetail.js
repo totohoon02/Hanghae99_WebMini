@@ -5,7 +5,7 @@ const home = () => {
 
 // 쿠키에서 "user-id"의 값을 가져옴
 
-https: $(document).ready(function () {
+$(document).ready(function () {
   // 모든 commentButton 요소에 클릭 이벤트 리스너 추가
   $(".commentButton").click(function () {
     // 클릭된 버튼의 데이터 가져오기
@@ -13,21 +13,25 @@ https: $(document).ready(function () {
     var boardId = urlParts[urlParts.length - 1];
     var cookies = document.cookie;
 
-    // 쿠키 문자열에서 user_id 값 추출
-    var user_id_start = cookies.indexOf("user_id=");
-    if (user_id_start !== -1) {
-      user_id_start += 8; // "user_id="의 길이
-      var user_id_end = cookies.indexOf(";", user_id_start);
-      if (user_id_end === -1) {
-        user_id_end = cookies.length;
+    // 쿠키 문자열에서 ';'로 분리하여 배열로 만듦
+    var cookieArray = cookies.split("; ");
+
+    // user_id를 찾아서 처리
+    var commentor = null;
+    for (var i = 0; i < cookieArray.length; i++) {
+      var cookie = cookieArray[i];
+      var [cookieKey, cookieValue] = cookie.split("=");
+      if (cookieKey === "username") {
+        commentor = cookieValue;
+        break;
       }
-      var commentor = cookies.substring(user_id_start, user_id_end);
-    } else {
-      // user_id가 없는 경우 또는 에러 처리
-      console.error("user_id 쿠키를 찾을 수 없습니다.");
-      return;
     }
 
+    // user_id가 없는 경우 또는 에러 처리
+    if (commentor === null) {
+      console.error("username 쿠키를 찾을 수 없습니다.");
+      return;
+    }
     // 입력 필드에서 코멘트 내용 가져오기
     var commentInput = $("#com").val();
 
