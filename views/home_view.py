@@ -29,9 +29,9 @@ def submitwish():
     userId = jsonData.get('user_id')
     contents = jsonData.get('contents')
     
-    user = User.query.filter_by(user_id=1).first()
+    user = User.query.filter_by(user_id=userId).first()
     if user:
-        newBoard = notice_board_list(user_id=1, username='박찬섭', contents=contents)
+        newBoard = notice_board_list(user_id=userId, username=user.username, contents=contents)
         db.session.add(newBoard)
         db.session.commit()
     else:
