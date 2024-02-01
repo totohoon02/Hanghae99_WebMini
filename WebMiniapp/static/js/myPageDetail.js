@@ -1,4 +1,4 @@
-const address = "http://127.0.0.1:8000";
+const address = "http://sanghoonkang.pythonanywhere.com";
 const home = () => {
   window.location.href = `${address}`;
 };
@@ -44,7 +44,7 @@ $(document).ready(function () {
 
     // Ajax를 사용하여 서버에 POST 요청 보내기
     $.ajax({
-      url: "http://127.0.0.1:8000/add_comment",
+      url: "http://sanghoonkang.pythonanywhere.com/add_comment",
       type: "POST",
       contentType: "application/json",
       data: JSON.stringify(data),

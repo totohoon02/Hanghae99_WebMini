@@ -151,7 +151,7 @@
                 if (id !== "") {
                     $.ajax({
                         type: "post", // 어떤 방식으로 보낼지
-                        url: "http://127.0.0.1:8000/join/check", // 보낼 주소
+                        url: "http://sanghoonkang.pythonanywhere.com/join/check", // 보낼 주소
                         data: { id: id }, // 데이터를 JSON 문자열로 변환
                         success: function (response) {
                             if (response) {
@@ -203,7 +203,7 @@
                 ) {
                     $.ajax({
                         type: "post",
-                        url: "http://127.0.0.1:8000/join/signup",
+                        url: "http://sanghoonkang.pythonanywhere.com/join/signup",
 
                         data: ({ id: id, password: password, name: name }),
                         success: function (response) {
