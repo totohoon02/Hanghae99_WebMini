@@ -421,6 +421,68 @@
             });
         });
 
+        document.querySelector(".logout-button").addEventListener("click", function () {
+            deleteCookie(key)
+            window.location.reload();
+        })
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const user_id = getCookie("user_id");
+
+            if (user_id) {
+                document.querySelector(".login-button").style.display = "none";
+                document.querySelector(".signin-button").style.display = "none";
+                document.querySelector(".mypage-button").style.display = "block";
+                document.querySelector(".logout-button").style.display = "block";
+                document.querySelectorAll(".follow-button").forEach(function (e) {
+                    if(user_id == e.dataset.user) {
+                        e.style.display = "none";
+                    }
+                    
+                });
+            } else {
+                document.querySelector(".login-button").style.display = "block";
+                document.querySelector(".signin-button").style.display = "block";
+                document.querySelector(".mypage-button").style.display = "none";
+                document.querySelector(".logout-button").style.display = "none";
+                document.querySelectorAll(".follow-button").forEach(function (e) {
+                    e.style.display = "none";
+                });
+            }
+        });
+
+        document.querySelectorAll(".follow-button").forEach(function(button) {
+            button.addEventListener("click", function (e) {
+                const userId = e.target.dataset.user;
+                const username = e.target.dataset.username;
+                const data = {
+                    user_id : userId,
+                    username : username
+                }
+                fetch(`${endpoint}/friend`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                })
+                .then(response => {
+                    if (response.ok) {
+                        throw new Error('post 요청 성공');
+                    }
+                })
+                .catch(error => {
+                    console.error('post 요청 실패');
+                })
+                .finally(()=>{
+                    window.location.href = `${endpoint}/?query=${searchKeyword}`;
+                })
+                
+            });
+        });
+
+
+
     </script>
 </body>
 
