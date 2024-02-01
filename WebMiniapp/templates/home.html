@@ -154,6 +154,7 @@
             max-height: 300px;
             display: flex;
             align: center;
+            border-radius:8px;
 
             h5 {
                 max-height: 250px;
@@ -165,7 +166,7 @@
 
             .username {
                 right: 5%;
-                bottom: 0%;
+                bottom: 5%;
                 position: absolute;
                 text-align: right;
                 color: white;
@@ -284,14 +285,14 @@
                             <h5 class="card-title">{{list.contents}}</h5>
                             <p class="card-text username">{{list.username}}</p>
 
-                            {% set follow_found = false %}
+                            {% set follow_found = namespace(exist=false) %}
                             {% for friend in follow %}
                                 {% if friend.friend_id == list.user_id %}
-                                    {% set follow_found = true %}
+                                    {% set follow_found.exist = true %}
                                 {% endif %}
                             {% endfor %}
 
-                            {% if not follow_found %}
+                            {% if not follow_found.exist %}
                                 <button class="follow-button" data-user="{{ list.user_id }}" data-username="{{ list.username }}">
                                     <p class="card-text follow" data-user="{{ list.user_id }}" data-follow="{{follow_found}}">팔로우</p>
                                 </button>

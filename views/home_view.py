@@ -19,8 +19,11 @@ def home():
         ).all()
     else:
         notice_list = notice_board_list.query.all()
+
+    friend_list = Friend.query.filter_by(user_id=user_cookie_id).all()
     
-    return render_template('home.html', data=notice_list)
+    
+    return render_template('home.html', data=notice_list, friendList=friend_list)
 
 @bp.route("/board", methods=['POST'])
 def submitwish():
@@ -44,7 +47,6 @@ def addfriend():
     friend_id_req = jsonData.get("user_id")
     user_cookie_id = request.cookies.get('user_id')
     user_name = User.query.filter_by(user_id=user_cookie_id).first().username
-    
     exist_friend = Friend.query.filter_by(user_id=user_cookie_id, friend_id=friend_id_req).first()
 
     if user_cookie_id and not exist_friend:
