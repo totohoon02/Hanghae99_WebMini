@@ -10,7 +10,9 @@ bp = Blueprint('home', __name__, url_prefix="/")
 @bp.route("/", methods=["GET"])
 def home():
     input_keyword = request.args.get('query')
+    input_sortBy = request.args.get('sortby')
     user_cookie_id = request.cookies.get('user_id')
+    print(input_keyword, input_sortBy)
 
     if input_keyword:
         notice_list = notice_board_list.query.filter(
@@ -19,9 +21,16 @@ def home():
         ).all()
     else:
         notice_list = notice_board_list.query.all()
+    
+    if input_sortBy == "recent":
+        notice_list = sorted(notice_list, key=lambda x: x.created_at, reverse=True) if notice_list else []
+    elif input_sortBy == "maxcomment":
+        notice_list = sorted(notice_list, key=lambda x: len(comment_list.query.filter_by(board_id=x.board_id).all()), reverse=True) if notice_list else []
+    elif input_sortBy == "old":
+        notice_list = sorted(notice_list, key=lambda x: x.created_at)
+    
 
     friend_list = Friend.query.filter_by(user_id=user_cookie_id).all()
-    
     
     return render_template('home.html', data=notice_list, friendList=friend_list)
 
@@ -62,6 +71,8 @@ def addfriend():
 @bp.route('/sort')
 def _list():
     sortboard = request.args.get('sortboard', type=str, default='recent')
+    user_cookie_id = request.cookies.get('user_id')
+    friend_list = Friend.query.filter_by(user_id=user_cookie_id).all()
 
     if sortboard == 'maxcomment':
         somang_list = notice_board_list.query.order_by(notice_board_list.comment_id.desc()).all()
@@ -69,8 +80,10 @@ def _list():
         somang_list = notice_board_list.query.order_by(notice_board_list.created_at.asc()).all()
     else:
         somang_list = notice_board_list.query.order_by(notice_board_list.created_at.desc()).all()
+        
+    
 
-    return render_template('home.html', data=somang_list, sortboard=sortboard)
+    return render_template('home.html', data=somang_list, friendList=friend_list)
 
 
 @bp.route("/get_comments")
