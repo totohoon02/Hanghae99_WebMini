@@ -289,7 +289,7 @@
         <div class="row row-cols-1 row-cols-md-4 g-4 mx-auto w-75 pb-5">
             {% set follow = friendList %}
             {%for list in data%}
-            <div class="col">
+            <div class="col" data-date="{{list.created_at}}">
                 <div class="h-100">
                     <div class="card-body wish-card">
                         <div id={{list.board_id}} onclick="redirectToBoard('{{ list.board_id }}')">
