@@ -1,6 +1,7 @@
 import os
 from flask import Flask
 from models import db
+# , User
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
@@ -11,9 +12,20 @@ def create_app():
 
   db.init_app(app)
   db.app = app
-
+  
+  
   with app.app_context():
+    #### 테스트용 ####
+    # db.drop_all()
     db.create_all()
+
+    #TEST
+    # user =  User(user_id = "user",
+    #               username="user",
+    #               password="1234",
+    #               frinedlist=None)
+    # db.session.add(user)
+    # db.session.commit()
 
   from views import main_view, music_view, mypage_view, home_view, join_view
   
