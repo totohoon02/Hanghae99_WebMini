@@ -44,7 +44,8 @@
   width: 100%;
   border-radius: 10px;
   background-color: #d9d9d9;
-  padding: 10px;
+  padding: 25px;
+  
 }
 .content{
   margin-bottom: 10px;
@@ -52,4 +53,20 @@
 }
 .comment_author{
   text-align: right;
+}
+ .comment input {
+    width: 100%;
+    height: 100%; /* 세로 길이를 100%로 설정 */
+    border: none;
+    outline: none;
+    background-color: transparent;
+     margin-top: -10px; /* 위쪽으로 10px 이동 */
+}
+.commentButton {
+    background-color: #808080;
+    border: none;
+    border-radius: 5px; /* 버튼의 둥근 모서리 설정 */
+    color: #fff;
+    padding: 20px;
+    cursor: pointer;
 }

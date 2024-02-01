@@ -237,25 +237,25 @@
                     <p onclick="goToHomePage()">회원가입</p>
                 </button>
             </div>
-        </header>
-        <main class="content-container">
-                <div class="input-wish-box">
-                    <input placeholder="소망을 입력 해 주세요." class="wish"></input>
-                    <button class="submit-wish" type="submit">소망 작성</button>
-                </div>
+    </header>
+    <main class="content-container">
+        <div class="input-wish-box">
+            <input placeholder="소망을 입력 해 주세요." class="wish"></input>
+            <button class="submit-wish" type="submit">소망 작성</button>
+        </div>
 
-            <div class="row row-cols-1 row-cols-md-4 g-4 mx-auto w-75 pb-5" >
-                {%for list in data%}
-                <div class="col">
-                    <div class="h-100">
-                        <div class="card-body wish-card">
-                            <h5 class="card-title">{{list.contents}}</h5>
-                            <p class="card-text">{{list.username}}</p>
-                        </div>
+        <div class="row row-cols-1 row-cols-md-4 g-4 mx-auto w-75 pb-5">
+            {%for list in data%}
+            <div class="col">
+                <div class="h-100">
+                    <div class="card-body wish-card" id="{{ list.board_id}}">
+                        <h5 class="card-title">{{list.contents}}</h5>
+                        <p class="card-text">{{list.username}}</p>
                     </div>
                 </div>
-                {%endfor%}
             </div>
+            {%endfor%}
+        </div>
         </div>
     </main>
 
@@ -299,19 +299,19 @@
                     },
                     body: JSON.stringify(data)
                 })
-                .then(response => {
-                    if (response.ok) {
-                        throw new Error('post 요청 성공');
-                    }
-                })
-                .catch(error => {
-                    console.error('post 요청 실패');
-                })
-                .finally(()=>{
-                    window.location.reload();
-                })
-                }
-                
+                    .then(response => {
+                        if (response.ok) {
+                            throw new Error('post 요청 성공');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('post 요청 실패');
+                    })
+                    .finally(() => {
+                        window.location.reload();
+                    })
+            }
+
         });
 
         document.querySelector('.wish').addEventListener('change', function (e) {
@@ -323,10 +323,10 @@
             searchKeyword = e.target.value
         });
         document.querySelector('.searchbtn').addEventListener('click', function () {
-                fetch(`http://127.0.0.1:8000/?query=${searchKeyword}`, {
-                    method: 'GET',
+            fetch(`http://127.0.0.1:8000/?query=${searchKeyword}`, {
+                method: 'GET',
 
-                })
+            })
                 .then(response => {
                     if (response.ok) {
                         throw new Error('post 요청 성공');
@@ -335,12 +335,12 @@
                 .catch(error => {
                     console.error('post 요청 실패');
                 })
-                .finally(()=>{
+                .finally(() => {
                     window.location.href = `http://127.0.0.1:8000/?query=${searchKeyword}`;
-                    
+
                 })
         });
-        
+
         function goToHomePage() {
             window.location.href = "/join/sign";
         }
@@ -361,6 +361,18 @@
                     error: function () {
                         alert("다시 시도해주세요");
                     }
+                });
+            });
+        });
+        document.addEventListener('DOMContentLoaded', function () {
+            // 모든 wish-card 요소에 클릭 이벤트 리스너 추가
+            var wishCards = document.querySelectorAll('.wish-card');
+            wishCards.forEach(function (card) {
+                card.addEventListener('click', function () {
+                    // 클릭된 카드의 id를 추출하여 URL 생성
+                    var cardId = card.id;
+                    var url = '/' + cardId;  // 원하는 URL로 수정
+                    window.location.href = url;
                 });
             });
         });

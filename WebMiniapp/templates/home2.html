@@ -196,7 +196,7 @@
         bodyEl.style.backgroundImage = "url('../static/6468578.jpg')";
     </script>
 
-    
+
     <div class="blur-box"></div>
     <header class="header-container">
         <div class="search-box">
@@ -207,75 +207,30 @@
             </button>
 
             <div class="btn-box">
-                
+
                 <button>
-                    <p onclick="goToMainPage()">메인페이지</p>
+                    <p onclick="goTomyPage()">마이페이지</p>
                 </button>
             </div>
-        </div>
     </header>
     <main class="content-container">
         <div class="input-wish-box">
             <input placeholder="소망을 입력 해 주세요." class="wish"></input>
-            <button class="submit-wish">소망 작성</button>
+            <button class="submit-wish" type="submit">소망 작성</button>
         </div>
 
         <div class="row row-cols-1 row-cols-md-4 g-4 mx-auto w-75 pb-5">
+            {%for list in data%}
             <div class="col">
                 <div class="h-100">
-                    <div class="card-body wish-card">
-                        <h5 class="card-title">소망 글 테스트
-                            소망 글 테스트
-                            소망 글 테스트
-                            소망 글 테스트
-                            소망 글 테스트
-                            소망 글 테스트
-                            소망 글 테스트
-                            소망 글 테스트
-                            소망 글 테스트
-                            소망 글 테스트
-                            소망 글 테스트
-                            소망 글 테스트
-                            소망 글 테스트
-                            소망 글 테스트소망 글 테스트소망 글 테스트소망 글 테스트소망 글 테스트소망 글 테스트소망 글 테스트소망 글 테스트소망 글 테스트소망 글 테스트소망 글 테스트소망 글
-                            테스트소망 글 테스트소망 글 테스트소망 글 테스트소망 글 테스트소망 글 테스트소망 글 테스트
-                        </h5>
-                        <p class="card-text">박찬섭</p>
+                    <div class="card-body wish-card" id='{{list.board_id}}'>
+                        <h5 class="card-title">{{list.contents}}</h5>
+                        <p class="card-text">{{list.username}}</p>
                     </div>
                 </div>
             </div>
-            <div class="col">
-                <div class="h-100">
-                    <div class="card-body wish-card">
-                        <h5 class="card-title">소망 글</h5>
-                        <p class="card-text">이름</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col">
-                <div class="h-100">
-                    <div class="card-body wish-card">
-                        <h5 class="card-title">소망 글</h5>
-                        <p class="card-text">이름</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col">
-                <div class="h-100">
-                    <div class="card-body wish-card">
-                        <h5 class="card-title">소망 글</h5>
-                        <p class="card-text">이름</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col">
-                <div class="h-100">
-                    <div class="card-body wish-card">
-                        <h5 class="card-title">소망 글</h5>
-                        <p class="card-text">이름</p>
-                    </div>
-                </div>
-            </div>
+            {%endfor%}
+        </div>
         </div>
     </main>
 
@@ -286,6 +241,7 @@
         const key = "user_id";
         let user_id;
         let wish;
+
         function getCookie(key) {
             const cookies = document.cookie.split('; ');
             for (const cookie of cookies) {
@@ -325,20 +281,44 @@
                     })
                     .catch(error => {
                         console.error('post 요청 실패');
-                    });
+                    })
+                    .finally(() => {
+                        window.location.reload();
+                    })
             }
+
         });
 
         document.querySelector('.wish').addEventListener('change', function (e) {
             wish = e.target.value
         });
 
-        function goToHomePage() {
-            window.location.href = "/join/sign";
+        let searchKeyword;
+        document.querySelector('.search').addEventListener('change', function (e) {
+            searchKeyword = e.target.value
+        });
+        document.querySelector('.searchbtn').addEventListener('click', function () {
+            fetch(`http://127.0.0.1:8000/?query=${searchKeyword}`, {
+                method: 'GET',
+
+            })
+                .then(response => {
+                    if (response.ok) {
+                        throw new Error('post 요청 성공');
+                    }
+                })
+                .catch(error => {
+                    console.error('post 요청 실패');
+                })
+                .finally(() => {
+                    window.location.href = `http://127.0.0.1:8000/?query=${searchKeyword}`;
+
+                })
+        });
+
+        function goTomyPage() {
+            window.location.href = "/mypage/";
         }
-        function goToMainPage() {
-                window.location.href = "/main/page";
-            }
         $(document).ready(function () {
             $("#login-btn").click(function () {
 
@@ -356,6 +336,18 @@
                     error: function () {
                         alert("다시 시도해주세요");
                     }
+                });
+            });
+        });
+        document.addEventListener('DOMContentLoaded', function () {
+            // 모든 wish-card 요소에 클릭 이벤트 리스너 추가
+            var wishCards = document.querySelectorAll('.wish-card');
+            wishCards.forEach(function (card) {
+                card.addEventListener('click', function () {
+                    // 클릭된 카드의 id를 추출하여 URL 생성
+                    var cardId = card.id;
+                    var url = '/' + cardId;  // 원하는 URL로 수정
+                    window.location.href = url;
                 });
             });
         });
