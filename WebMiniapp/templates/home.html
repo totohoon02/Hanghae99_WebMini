@@ -163,13 +163,37 @@
                 color: white;
             }
 
-            p {
+            .username {
                 right: 5%;
-                bottom: 5%;
+                bottom: 0%;
                 position: absolute;
                 text-align: right;
-                width: 100%;
                 color: white;
+            }
+
+            .follow-button {
+                left: 5%;
+                bottom: 5%;
+                position: absolute;
+                padding-left:10px;
+                padding-right:10px;
+                text-align: right;
+                width: auto;
+                color: white;
+                display:flex;
+                justify-contents:center;
+                align-items:center;
+                background-color:rgba(255,255,255,0.5);
+                border:0;
+                border-radius:20px;
+
+                .follow {
+                    color:black;
+                }
+            }
+
+            .follow-button:hover {
+                background-color:rgba(255,255,255,0.8);
             }
         }
 
@@ -252,12 +276,26 @@
                 </div>
 
             <div class="row row-cols-1 row-cols-md-4 g-4 mx-auto w-75 pb-5" >
+                {% set follow = friendList %}
                 {%for list in data%}
                 <div class="col">
                     <div class="h-100">
                         <div class="card-body wish-card">
                             <h5 class="card-title">{{list.contents}}</h5>
-                            <p class="card-text">{{list.username}}</p>
+                            <p class="card-text username">{{list.username}}</p>
+
+                            {% set follow_found = false %}
+                            {% for friend in follow %}
+                                {% if friend.friend_id == list.user_id %}
+                                    {% set follow_found = true %}
+                                {% endif %}
+                            {% endfor %}
+
+                            {% if not follow_found %}
+                                <button class="follow-button" data-user="{{ list.user_id }}" data-username="{{ list.username }}">
+                                    <p class="card-text follow" data-user="{{ list.user_id }}" data-follow="{{follow_found}}">팔로우</p>
+                                </button>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
@@ -273,6 +311,8 @@
         const key = "user_id";
         let user_id;
         let wish;
+        let searchKeyword=""
+        let endpoint = "http://127.0.0.1:8000"
 
         function getCookie(key) {
             const cookies = document.cookie.split('; ');
@@ -304,7 +344,7 @@
                 };
 
                 // fetch API를 사용하여 서버에 POST 요청을 보냄
-                fetch('http://127.0.0.1:8000/board', {
+                fetch(`${endpoint}/board`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -330,12 +370,11 @@
             wish = e.target.value
         });
 
-        let searchKeyword;
         document.querySelector('.search').addEventListener('change', function (e) {
             searchKeyword = e.target.value
         });
         document.querySelector('.searchbtn').addEventListener('click', function () {
-                fetch(`http://127.0.0.1:8000/?query=${searchKeyword}`, {
+                fetch(`${endpoint}/?query=${searchKeyword}`, {
                     method: 'GET',
 
                 })
@@ -348,7 +387,7 @@
                     console.error('post 요청 실패');
                 })
                 .finally(()=>{
-                    window.location.href = `http://127.0.0.1:8000/?query=${searchKeyword}`;
+                    window.location.href = `${endpoint}/?query=${searchKeyword}`;
                     
                 })
         });
@@ -370,7 +409,7 @@
 
                 $.ajax({
                     type: "POST",
-                    url: "http://127.0.0.1:8000/join/login",
+                    url: `${endpoint}/join/login`,
                     data: ({ ids: id, passwords: password }),
                     success: function (response) {
                         window.location.href = "/";
@@ -384,18 +423,26 @@
 
         document.addEventListener("DOMContentLoaded", function () {
             const user_id = getCookie("user_id");
-            console.log(user_id)
 
             if (user_id) {
                 document.querySelector(".login-button").style.display = "none";
                 document.querySelector(".signin-button").style.display = "none";
                 document.querySelector(".mypage-button").style.display = "block";
                 document.querySelector(".logout-button").style.display = "block";
+                document.querySelectorAll(".follow-button").forEach(function (e) {
+                    if(user_id == e.dataset.user) {
+                        e.style.display = "none";
+                    }
+                    
+                });
             } else {
                 document.querySelector(".login-button").style.display = "block";
                 document.querySelector(".signin-button").style.display = "block";
                 document.querySelector(".mypage-button").style.display = "none";
                 document.querySelector(".logout-button").style.display = "none";
+                document.querySelectorAll(".follow-button").forEach(function (e) {
+                    e.style.display = "none";
+                });
             }
         });
 
@@ -403,6 +450,36 @@
             deleteCookie(key)
             window.location.reload();
         })
+
+        document.querySelectorAll(".follow-button").forEach(function(button) {
+            button.addEventListener("click", function (e) {
+                const userId = e.target.dataset.user;
+                const username = e.target.dataset.username;
+                const data = {
+                    user_id : userId,
+                    username : username
+                }
+                fetch(`${endpoint}/friend`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                })
+                .then(response => {
+                    if (response.ok) {
+                        throw new Error('post 요청 성공');
+                    }
+                })
+                .catch(error => {
+                    console.error('post 요청 실패');
+                })
+                .finally(()=>{
+                    window.location.href = `${endpoint}/?query=${searchKeyword}`;
+                })
+                
+            });
+        });
 
 
     </script>
