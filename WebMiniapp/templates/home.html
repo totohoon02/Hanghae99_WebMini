@@ -289,7 +289,7 @@
         <div class="row row-cols-1 row-cols-md-4 g-4 mx-auto w-75 pb-5">
             {% set follow = friendList %}
             {%for list in data%}
-            <div class="col">
+            <div class="col" data-date="{{list.created_at}}">
                 <div class="h-100">
                     <div class="card-body wish-card">
                         <div id={{list.board_id}} onclick="redirectToBoard('{{ list.board_id }}')">
@@ -495,8 +495,30 @@
 
             });
         });
+        const cardContainer = document.querySelector('.row.row-cols-1.row-cols-md-4.g-4.mx-auto.w-75.pb-5');
 
-        $(".sortboard").on('change', function () {
+        function sortCards(sortBy) {
+            const cards = Array.from(cardContainer.childNodes);
+            cards.forEach((a)=>{
+                console.log(createdAt);
+            })
+            
+            
+    
+            cardContainer.innerHTML = '';
+    
+            cards.forEach(function (card) {
+                cardContainer.appendChild(card);
+            });
+        }
+
+        document.querySelector(".sortboard").addEventListener("change", function (e) {
+            let sortBy = e.target.value;
+            sortCards(sortBy)
+            
+        })
+
+        /*$(".sortboard").on('change', function () {
             const selectedValue = $(this).val();
             $(".sortboard").val(selectedValue);
             // 폼이 제출될 때, 빈 문자열이라면 선택된 옵션이 없는 것으로 간주하여 제출을 막습니다.
@@ -509,7 +531,7 @@
           function redirectToBoard(boardId) {
                 var url = '/wish/' + boardId;
                 window.location.href = url;
-            }
+            }*/
 
 
     </script>
