@@ -394,7 +394,7 @@
             function getSort () {
                 let currentURL = window.location.href;
                 let urlParams = new URLSearchParams(window.location.search);
-                let queryValue = urlParams.get('query');
+                let queryValue = urlParams.get('query') | "";
                 window.location.href = `http://127.0.0.1:8000/?query=${queryValue}&sortby=${sortBy}`;
             }
 
