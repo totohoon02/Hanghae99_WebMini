@@ -395,7 +395,8 @@
                 let currentURL = window.location.href;
                 let urlParams = new URLSearchParams(window.location.search);
                 let queryValue = urlParams.get('query');
-                window.location.href = `http://127.0.0.1:8000/?query=${queryValue}&sortby=${sortBy}`;
+                let query = queryValue == null ? "" : queryValue;
+                window.location.href = `http://127.0.0.1:8000/?query=${query}&sortby=${sortBy}`;
             }
 
             
