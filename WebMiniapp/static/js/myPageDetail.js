@@ -8,7 +8,7 @@ $(document).ready(function () {
   $(".commentButton").click(function () {
     let com = $("#com");
 
-    if (com != "") {
+    if (com.val() != "") {
       // 클릭된 버튼의 데이터 가져오기
       var urlParts = window.location.href.split("/");
       var boardId = urlParts[urlParts.length - 1];
