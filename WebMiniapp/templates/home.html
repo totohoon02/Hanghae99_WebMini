@@ -388,7 +388,7 @@
             });
 
             function getListApi () {
-                window.location.href = `http://127.0.0.1:8000/?query=${searchKeyword}&sortby=${sortBy}`;
+                window.location.href = `http://sanghoonkang.pythonanywhere.com/?query=${searchKeyword}&sortby=${sortBy}`;
             }
 
             function getSort () {
@@ -396,7 +396,7 @@
                 let urlParams = new URLSearchParams(window.location.search);
                 let queryValue = urlParams.get('query');
                 let query = queryValue == null ? "" : queryValue;
-                window.location.href = `http://127.0.0.1:8000/?query=${query}&sortby=${sortBy}`;
+                window.location.href = `http://sanghoonkang.pythonanywhere.com/?query=${query}&sortby=${sortBy}`;
             }
 
             
