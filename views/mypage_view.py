@@ -25,7 +25,6 @@ def deleteWish():
 @bp.route("/deleteFriend", methods=["DELETE"])
 def deleteFriend():
     friendID = request.json['id']
-    print(friendID)
     try:
         Friend.query.filter(Friend.friend_id == friendID).delete()
         db.session.commit()
